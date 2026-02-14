@@ -309,7 +309,7 @@
 
             // STANDARD API CALL
             try {
-                const res = await fetch("http://127.0.0.1:8765/query", {
+                const res = await fetch("https://cyberguard-api-zxry.onrender.com/query", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ query: text, username })
@@ -380,5 +380,6 @@
         }
     </script>
 </body>
+
 
 </html>
