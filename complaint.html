@@ -84,7 +84,7 @@
             const formData = new FormData(e.target);
 
             try {
-                const res = await fetch("http://127.0.0.1:8765/report", {
+                const res = await fetch("https://cyberguard-api-zxry.onrender.com/report", {
                     method: "POST",
                     body: formData
                 });
@@ -109,5 +109,6 @@
 
 
 </body>
+
 
 </html>
