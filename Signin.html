@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+
+    <style>
+        /* YOUR CSS – UNCHANGED */
+        /* === CYBER SECURITY THEME === */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #0B1120;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #F3F4F6;
+        }
+
+        .signup-box {
+            width: 420px;
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signup-box h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #F3F4F6;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .input-field {
+            margin-bottom: 18px;
+        }
+
+        .input-field label {
+            font-size: 13px;
+            color: #9CA3AF;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #F3F4F6;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .signup-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+        }
+
+        .links a {
+            color: #3B82F6;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .links a:hover {
+            color: #8B5CF6;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="signup-box">
+        <h2>Create Account</h2>
+
+        <div class="input-field">
+            <label>Username</label>
+            <input type="text" id="name">
+        </div>
+
+        <div class="input-field">
+            <label>Email</label>
+            <input type="email" id="email">
+        </div>
+
+        <div class="input-field">
+            <label>Mobile Number</label>
+            <input type="text" id="phone_no">
+        </div>
+
+        <div class="input-field">
+            <label>Password</label>
+            <input type="password" id="password">
+        </div>
+
+        <div class="input-field">
+            <label>Confirm Password</label>
+            <input type="password" id="re_password">
+        </div>
+
+        <button class="signup-btn" onclick="register()">Sign Up</button>
+
+        <div class="links">
+            <p><a href="login.html">Already have an account? Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        async function register() {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone_no = document.getElementById("phone_no").value.trim();
+            const password = document.getElementById("password").value;
+            const re_password = document.getElementById("re_password").value;
+
+            if (!name || !email || !phone_no || !password || !re_password) {
+                alert("All fields are required");
+                return;
+            }
+
+            try {
+                const res = await fetch("http://127.0.0.1:8765/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        phone_no,
+                        password,
+                        re_password
+                    })
+                });
+
+                const data = await res.json();
+
+                if (res.status === 200 || res.status === 201) {
+                    alert("Registration successful!");
+                    window.location.href = "index.html";
+                }
+                else {
+                    alert(data.detail || "Registration failed");
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Server error");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

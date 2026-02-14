@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <style>
+        /* ❌ CSS NOT TOUCHED */
+        /* === CYBER SECURITY THEME === */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #0B1120;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #F3F4F6;
+        }
+
+        .login-box {
+            width: 380px;
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #F3F4F6;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .input-field {
+            margin-bottom: 20px;
+        }
+
+        .input-field label {
+            font-size: 13px;
+            color: #9CA3AF;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #F3F4F6;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+        }
+
+        .links p {
+            margin-bottom: 8px;
+        }
+
+        .links a {
+            color: #3B82F6;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .links a:hover {
+            color: #8B5CF6;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+        <h2>Welcome Back</h2>
+
+        <div class="input-field">
+            <label>Email or Username</label>
+            <input type="text" id="username" placeholder="Enter email or username">
+        </div>
+
+        <div class="input-field">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password">
+        </div>
+
+        <button class="btn-login" onclick="login()">Login</button>
+
+        <div class="links">
+            <p><a href="#">Forgot Password?</a></p>
+            <p><a href="Signin.html">Create an Account</a></p>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const identifier = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!identifier || !password) {
+                alert("Please fill all fields");
+                return;
+            }
+
+            fetch("http://127.0.0.1:8765/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ identifier, password })
+            })
+                .then(res => res.json().then(data => ({ status: res.status, data })))
+                .then(({ status, data }) => {
+                    console.log("Response:", status, data);
+
+                    if (status === 200) {
+                        localStorage.setItem("user_id", data.user_id);
+                        localStorage.setItem("username", identifier); // ✅ FIX
+
+                        window.location.href = "index.html";   // ✅ REDIRECT WORKS
+                    }
+                    else if (status === 404) {
+                        alert("User not found. Please create an account.");
+                        window.location.href = "Signin.html";
+                    }
+                    else {
+                        alert(data.detail || "Invalid credentials");
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch failed:", err);
+                    alert("Server error");
+                });
+        }
+    </script>
+
+
+</body>
+
+</html>

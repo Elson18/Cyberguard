@@ -1,0 +1,172 @@
+/* =========================
+   Global Reset - CYBER THEME
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #0B1120;
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F3F4F6;
+}
+
+/* =========================
+   Form Container
+========================= */
+.contact-form {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(12px);
+    width: 100%;
+    max-width: 450px;
+    padding: 35px 32px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* =========================
+   Title
+========================= */
+.contact-label {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #F3F4F6;
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+}
+
+/* =========================
+   Input Box
+========================= */
+.input-box {
+    position: relative;
+    margin-bottom: 22px;
+}
+
+/* Inputs */
+.input-box input,
+.input-box textarea,
+.input-box select {
+    width: 100%;
+    padding: 14px 14px 14px 46px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    font-size: 14px;
+    color: #F3F4F6;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s;
+}
+
+.input-box input:focus,
+.input-box textarea:focus,
+.input-box select:focus {
+    border-color: #8B5CF6;
+    background: rgba(139, 92, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* Textarea */
+.input-box textarea {
+    resize: none;
+    height: 95px;
+}
+
+/* File Input */
+.input-box input[type="file"] {
+    padding-left: 14px;
+    cursor: pointer;
+}
+
+/* =========================
+   Icons
+========================= */
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    color: #0288d1;
+    font-size: 16px;
+}
+
+/* =========================
+   Floating Labels
+========================= */
+.input-box label {
+    position: absolute;
+    left: 46px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #607d8b;
+    background: #ffffff;
+    padding: 0 6px;
+    pointer-events: none;
+    transition: 0.25s ease;
+}
+
+.input-box input:focus+label,
+.input-box input:not(:placeholder-shown)+label,
+.input-box textarea:focus+label,
+.input-box textarea:not(:placeholder-shown)+label,
+.input-box select:focus+label,
+.input-box select:valid+label {
+    top: -7px;
+    font-size: 11px;
+    color: #0288d1;
+}
+
+/* =========================
+   Select Arrow Fix
+========================= */
+.input-box select {
+    appearance: none;
+}
+
+/* =========================
+   Submit Button
+========================= */
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.35);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   Responsive
+========================= */
+@media (max-width: 480px) {
+    .contact-form {
+        padding: 28px 22px;
+    }
+
+    .contact-label {
+        font-size: 24px;
+    }
+}

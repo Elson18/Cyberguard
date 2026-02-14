@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard AI | Threat Intelligence Center</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="brand">
+                <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+                <span>CYBERGUARD <span style="color:var(--primary)">AI</span></span>
+            </div>
+
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                SYSTEM SECURE
+            </div>
+
+            <div class="user-profile">
+                <button class="action-btn"><i class="far fa-bell"></i></button>
+                <div class="avatar-circle" id="userAvatar">U</div>
+                <div>
+                    <div style="font-size:13px; font-weight:600" id="userNameDisplay">User</div>
+                    <div style="font-size:11px; color:var(--text-muted)">Analyst Lvl 1</div>
+                </div>
+                <button class="action-btn" onclick="logout()" title="Logout"><i
+                        class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </header>
+
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+            <div class="nav-item active">
+                <i class="fas fa-comment-alt"></i> Live Intel Chat
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-bug"></i> Threat Reports
+            </div>
+            <div class="nav-item">
+                <i class="fas fa-network-wired"></i> Network Logs
+            </div>
+            <div class="nav-divider"></div>
+            <div class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </div>
+            <div class="nav-item" onclick="clearChat()">
+                <i class="fas fa-trash"></i> Clear Session
+            </div>
+        </aside>
+
+        <!-- MAIN CHAT AREA -->
+        <main class="main-chat">
+            <div class="chat-feed" id="pane">
+                <!-- Welcome Message -->
+                <div class="message bot">
+                    <div class="msg-avatar"><i class="fas fa-robot"></i></div>
+                    <div class="msg-bubble">
+                        <div class="msg-header">CyberGuard Core • 10:00 AM</div>
+                        System online. Threat monitoring active. How can I assist you with your security operations
+                        today?
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <button class="action-btn"><i class="fas fa-paperclip"></i></button>
+                    <input type="text" class="chat-input" id="messageInput"
+                        placeholder="Analyze threat, scan domain, or ask for intel...">
+                    <button class="action-btn send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT THREAT PANEL -->
+        <aside class="threat-panel">
+            <div class="panel-header">Live Threat Feed</div>
+
+            <div class="widget">
+                <h3>Global Threat Level</h3>
+                <div class="risk-meter">
+                    <span class="risk-score">HIGH</span>
+                </div>
+                <div style="text-align:center; font-size:12px; color:var(--text-muted)">Elevated activity detected in
+                    region US-EAST-1</div>
+            </div>
+
+            <div class="widget">
+                <h3>Vulnerability Scan</h3>
+                <div class="stat-row">
+                    <span>Target</span>
+                    <span class="stat-value">Localhost</span>
+                </div>
+                <div class="stat-row">
+                    <span>Ports Open</span>
+                    <span class="stat-value">80, 443</span>
+                </div>
+                <div class="stat-row">
+                    <span>SSL Status</span>
+                    <span class="stat-value" style="color:var(--accent-success)">Valid</span>
+                </div>
+            </div>
+
+            <div class="widget">
+                <h3>Recent Alerts</h3>
+                <div
+                    style="font-size:12px; margin-bottom:8px; border-left:2px solid var(--accent-warning); padding-left:8px;">
+                    <div style="color:var(--accent-warning)">SQL Injection Attempt</div>
+                    <div style="color:var(--text-muted)">10:42 AM • IP 192.168.1.5</div>
+                </div>
+                <div style="font-size:12px; border-left:2px solid var(--primary); padding-left:8px;">
+                    <div style="color:var(--primary)">Login Anomaly</div>
+                    <div style="color:var(--text-muted)">09:15 AM • User Admin</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        /* ================= AUTH ================= */
+        const username = localStorage.getItem("username");
+        if (!username) location.href = "login.html";
+
+        document.getElementById("userNameDisplay").innerText = username;
+        document.getElementById("userAvatar").innerText = username.charAt(0).toUpperCase();
+
+        const pane = document.getElementById("pane");
+        const input = document.getElementById("messageInput");
+        const STORAGE_KEY = `chat_${username}`;
+
+        /* ================= UTILS ================= */
+        function formatMessage(text) {
+            if (!text) return "";
+            return text
+                .replace(/\*\*(.*?)\*\*/gim, "<b>$1</b>")
+                .replace(/\*(.*?)\*/gim, "<i>$1</i>")
+                .replace(/^> (.*)$/gim, "<blockquote>$1</blockquote>")
+                .replace(/\n/g, "<br>");
+        }
+
+        function saveChat() {
+            localStorage.setItem(STORAGE_KEY, pane.innerHTML);
+        }
+
+        function loadChat() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                pane.innerHTML = saved;
+                pane.scrollTop = pane.scrollHeight;
+            }
+        }
+
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        /* ================= THREAT UTILS ================= */
+        function getThreatBadgeHTML(level) {
+            const levels = {
+                "Low": "threat-low",
+                "Medium": "threat-medium",
+                "High": "threat-high",
+                "Urgent": "threat-urgent"
+            };
+            const cssClass = levels[level] || "threat-low";
+            const icon = level === "High" || level === "Urgent" ? '<i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-shield-alt"></i>';
+            return `<div class="threat-badge ${cssClass}">${icon} ${level} Threat</div>`;
+        }
+
+        /* ================= CHAT LOGIC ================= */
+        function addMessage(content, type, isStructured = false) {
+            const msg = document.createElement("div");
+            msg.className = "message " + type + " fade-in-up";
+
+            const avatarIcon = type === "user" ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            const name = type === "user" ? "You" : "CyberGuard Core";
+
+            let innerContent = "";
+
+            if (isStructured && typeof content === 'object') {
+                // STRUCTURED RESPONSE BUILDER
+                innerContent = `
+                    <div class="msg-card">
+                        ${content.threatLevel ? getThreatBadgeHTML(content.threatLevel) : ''}
+                        
+                        ${content.emotionalMsg ? `<div class="emotional-support">${content.emotionalMsg}</div>` : ''}
+                        
+                        <div class="main-explanation">
+                            ${formatMessage(content.message)}
+                        </div>
+
+                        ${content.actions ? `
+                            <div class="action-steps">
+                                ${content.actions.map((step, i) => `
+                                    <div class="action-step-item">
+                                        <div class="step-number">${i + 1}</div>
+                                        <div>${step}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+
+                        ${content.showHelpline ? `
+                            <div class="helpline-box" onclick="window.location.href='tel:1930'">
+                                <div class="helpline-icon"><i class="fas fa-phone-alt"></i></div>
+                                <div class="helpline-text">
+                                    <div class="helpline-title">Cyber Crime Helpline</div>
+                                    <div class="helpline-number">1930 (Immediate Assistance)</div>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${content.redirect ? `
+                             <button class="action-btn" style="background:var(--accent-warning); color:#000; font-weight:bold; margin-top:8px;" onclick="goToComplaint()">
+                                <i class="fas fa-exclamation-triangle"></i> File Cyber Complaint
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            } else {
+                // PLAIN TEXT FALLBACK
+                innerContent = formatMessage(content);
+            }
+
+            msg.innerHTML = `
+                <div class="msg-avatar">${avatarIcon}</div>
+                <div class="msg-bubble">
+                    <div class="msg-header">${name} • ${getCurrentTime()}</div>
+                    ${innerContent}
+                </div>
+            `;
+            pane.appendChild(msg);
+            pane.scrollTop = pane.scrollHeight;
+            saveChat();
+        }
+
+        async function sendMessage() {
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage(text, "user");
+            input.value = "";
+
+            // Typing Indicator
+            const typing = document.createElement("div");
+            typing.className = "message bot";
+            typing.id = "typingIndicator";
+            typing.innerHTML = `
+                <div class="msg-avatar"><i class="fas fa-robot"></i></div>
+                <div class="msg-bubble">
+                    <div class="typing-dots">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                </div>
+            `;
+            pane.appendChild(typing);
+            pane.scrollTop = pane.scrollHeight;
+
+            // SIMULATE STRUCTURED RESPONSE FOR DEMO
+            // In a real app, this logic would be in the backend
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes("scan") || lowerText.includes("threat") || lowerText.includes("hack") || lowerText.includes("virus")) {
+                setTimeout(() => {
+                    typing.remove();
+                    const mockResponse = {
+                        threatLevel: "High",
+                        emotionalMsg: "I understand this is alarming. Stay calm, we are securing your perimeter.",
+                        message: "We have detected potential malicious activity consistent with a standardized attack vector. Your system may be compromised.",
+                        actions: [
+                            "Disconnect your device from the internet immediately.",
+                            "Do not log into any banking or sensitive accounts.",
+                            "Run a full system offline scan.",
+                            "Contact your IT department or a cyber specialist."
+                        ],
+                        showHelpline: true,
+                        redirect: false
+                    };
+                    addMessage(mockResponse, "bot", true);
+                }, 1500);
+                return;
+            } else if (lowerText.includes("help") || lowerText.includes("support")) {
+                setTimeout(() => {
+                    typing.remove();
+                    const mockResponse = {
+                        threatLevel: "Medium",
+                        emotionalMsg: "We are here to assist you. Let's resolve this together.",
+                        message: "If you believe you have been a victim of cyber fraud, immediate action is required to minimize damage.",
+                        actions: [
+                            "Gather all evidence (screenshots, transaction IDs).",
+                            "Report the incident to the official portal.",
+                            "Block relevant bank cards or accounts."
+                        ],
+                        showHelpline: true,
+                        redirect: true
+                    };
+                    addMessage(mockResponse, "bot", true);
+                }, 1500);
+                return;
+            }
+
+            // STANDARD API CALL
+            try {
+                const res = await fetch("http://127.0.0.1:8765/query", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ query: text, username })
+                });
+
+                const data = await res.json();
+                typing.remove();
+
+                if (data.redirect === true) {
+                    // Fallback to structured format even for redirect
+                    const structuredData = {
+                        threatLevel: "Medium",
+                        emotionalMsg: "Let's get this reported immediately.",
+                        message: data.answer,
+                        actions: [],
+                        showHelpline: false,
+                        redirect: true
+                    };
+                    addMessage(structuredData, "bot", true);
+                    return;
+                }
+
+                // If standard text, check if we can enhance it slightly or just show as text
+                addMessage(data.answer, "bot");
+
+            } catch (err) {
+                typing.remove();
+                addMessage("⚠️ Connection Error: Unable to reach threat intelligence server.", "bot");
+            }
+        }
+
+        function goToComplaint() {
+            window.location.href = "complaint.html";
+        }
+
+        /* ================= RETURN FROM COMPLAINT ================= */
+        loadChat();
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("from") === "complaint") {
+            addMessage(
+                "✅ Complaint logged in secure database. Investigation initiated.",
+                "bot"
+            );
+            history.replaceState(null, "", "index.html");
+        }
+
+        /* ================= EVENTS ================= */
+        document.getElementById("sendBtn").onclick = sendMessage;
+        input.addEventListener("keydown", e => e.key === "Enter" && sendMessage());
+
+        function clearChat() {
+            localStorage.removeItem(STORAGE_KEY);
+            pane.innerHTML = `
+                <div class="message bot">
+                    <div class="msg-avatar"><i class="fas fa-robot"></i></div>
+                    <div class="msg-bubble">
+                        <div class="msg-header">CyberGuard Core • ${getCurrentTime()}</div>
+                        Session cleared. System online.
+                    </div>
+                </div>
+            `;
+        }
+
+        function logout() {
+            localStorage.removeItem("username");
+            location.href = "login.html";
+        }
+    </script>
+</body>
+
+</html>
