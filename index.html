@@ -1,385 +1,229 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberGuard AI | Threat Intelligence Center</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EchoVision — Cyber Support</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
+<body class="page-dashboard">
 
-<body>
+<div class="bg-canvas" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-blob bg-blob--blue"></div>
+  <div class="bg-blob bg-blob--cyan"></div>
+  <div class="bg-blob bg-blob--emerald"></div>
+</div>
 
-    <div class="app-container">
-        <!-- HEADER -->
-        <header class="header">
-            <div class="brand">
-                <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
-                <span>CYBERGUARD <span style="color:var(--primary)">AI</span></span>
-            </div>
+<div class="app">
 
-            <div class="status-badge">
-                <div class="status-dot"></div>
-                SYSTEM SECURE
-            </div>
-
-            <div class="user-profile">
-                <button class="action-btn"><i class="far fa-bell"></i></button>
-                <div class="avatar-circle" id="userAvatar">U</div>
-                <div>
-                    <div style="font-size:13px; font-weight:600" id="userNameDisplay">User</div>
-                    <div style="font-size:11px; color:var(--text-muted)">Analyst Lvl 1</div>
-                </div>
-                <button class="action-btn" onclick="logout()" title="Logout"><i
-                        class="fas fa-sign-out-alt"></i></button>
-            </div>
-        </header>
-
-        <!-- LEFT SIDEBAR -->
-        <aside class="sidebar">
-            <div class="nav-item active">
-                <i class="fas fa-comment-alt"></i> Live Intel Chat
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-bug"></i> Threat Reports
-            </div>
-            <div class="nav-item">
-                <i class="fas fa-network-wired"></i> Network Logs
-            </div>
-            <div class="nav-divider"></div>
-            <div class="nav-item">
-                <i class="fas fa-cog"></i> Settings
-            </div>
-            <div class="nav-item" onclick="clearChat()">
-                <i class="fas fa-trash"></i> Clear Session
-            </div>
-        </aside>
-
-        <!-- MAIN CHAT AREA -->
-        <main class="main-chat">
-            <div class="chat-feed" id="pane">
-                <!-- Welcome Message -->
-                <div class="message bot">
-                    <div class="msg-avatar"><i class="fas fa-robot"></i></div>
-                    <div class="msg-bubble">
-                        <div class="msg-header">CyberGuard Core • 10:00 AM</div>
-                        System online. Threat monitoring active. How can I assist you with your security operations
-                        today?
-                    </div>
-                </div>
-            </div>
-
-            <div class="input-area">
-                <div class="input-wrapper">
-                    <button class="action-btn"><i class="fas fa-paperclip"></i></button>
-                    <input type="text" class="chat-input" id="messageInput"
-                        placeholder="Analyze threat, scan domain, or ask for intel...">
-                    <button class="action-btn send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
-                </div>
-            </div>
-        </main>
-
-        <!-- RIGHT THREAT PANEL -->
-        <aside class="threat-panel">
-            <div class="panel-header">Live Threat Feed</div>
-
-            <div class="widget">
-                <h3>Global Threat Level</h3>
-                <div class="risk-meter">
-                    <span class="risk-score">HIGH</span>
-                </div>
-                <div style="text-align:center; font-size:12px; color:var(--text-muted)">Elevated activity detected in
-                    region US-EAST-1</div>
-            </div>
-
-            <div class="widget">
-                <h3>Vulnerability Scan</h3>
-                <div class="stat-row">
-                    <span>Target</span>
-                    <span class="stat-value">Localhost</span>
-                </div>
-                <div class="stat-row">
-                    <span>Ports Open</span>
-                    <span class="stat-value">80, 443</span>
-                </div>
-                <div class="stat-row">
-                    <span>SSL Status</span>
-                    <span class="stat-value" style="color:var(--accent-success)">Valid</span>
-                </div>
-            </div>
-
-            <div class="widget">
-                <h3>Recent Alerts</h3>
-                <div
-                    style="font-size:12px; margin-bottom:8px; border-left:2px solid var(--accent-warning); padding-left:8px;">
-                    <div style="color:var(--accent-warning)">SQL Injection Attempt</div>
-                    <div style="color:var(--text-muted)">10:42 AM • IP 192.168.1.5</div>
-                </div>
-                <div style="font-size:12px; border-left:2px solid var(--primary); padding-left:8px;">
-                    <div style="color:var(--primary)">Login Anomaly</div>
-                    <div style="color:var(--text-muted)">09:15 AM • User Admin</div>
-                </div>
-            </div>
-        </aside>
+  <aside class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo-icon">CG</div>
+      <div class="logo-text">
+        <strong>CyberGuard</strong>
+        <span>Multilingual CyberCrime Support<br>RAG + Agentic AI</span>
+      </div>
     </div>
 
-    <!-- SCRIPTS -->
-    <script>
-        /* ================= AUTH ================= */
-        const username = localStorage.getItem("username");
-        if (!username) location.href = "login.html";
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span class="status-text">SYSTEM ACTIVE</span>
+    </div>
 
-        document.getElementById("userNameDisplay").innerText = username;
-        document.getElementById("userAvatar").innerText = username.charAt(0).toUpperCase();
+    <button class="btn-new" onclick="clearChat()">+ New Session</button>
 
-        const pane = document.getElementById("pane");
-        const input = document.getElementById("messageInput");
-        const STORAGE_KEY = `chat_${username}`;
+    <div class="sidebar-panel">
+      <div class="sidebar-panel-title">System Status</div>
+      <div class="sidebar-stat">
+        <span>RAG Engine</span>
+        <span class="online">● Online</span>
+      </div>
+      <div class="sidebar-stat">
+        <span>AI Model</span>
+        <span class="online">● Active</span>
+      </div>
+      <div class="sidebar-stat">
+        <span>Threat DB</span>
+        <span class="online">● Synced</span>
+      </div>
+    </div>
 
-        /* ================= UTILS ================= */
-        function formatMessage(text) {
-            if (!text) return "";
-            return text
-                .replace(/\*\*(.*?)\*\*/gim, "<b>$1</b>")
-                .replace(/\*(.*?)\*/gim, "<i>$1</i>")
-                .replace(/^> (.*)$/gim, "<blockquote>$1</blockquote>")
-                .replace(/\n/g, "<br>");
-        }
+    <div class="sidebar-footer">
+      <div class="user-row">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatarLetter">U</div>
+          <div>
+            <div class="user-name" id="userName">—</div>
+            <div class="user-label">● Active</div>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">Exit</button>
+      </div>
+    </div>
+  </aside>
 
-        function saveChat() {
-            localStorage.setItem(STORAGE_KEY, pane.innerHTML);
-        }
+  <main class="main">
+    <div class="main-header">
+      <div>
+        <div class="main-title">Cyber Incident Assistant</div>
+        <div class="main-subtitle">Secure end-to-end session · All data encrypted</div>
+      </div>
+      <div class="tag">AI Powered</div>
+    </div>
 
-        function loadChat() {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved) {
-                pane.innerHTML = saved;
-                pane.scrollTop = pane.scrollHeight;
-            }
-        }
+    <div class="pane" id="pane">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🛡️</div>
+        <p>Start a conversation to get expert cyber support</p>
+      </div>
+    </div>
 
-        function getCurrentTime() {
-            return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        }
+    <div class="composer">
+      <div class="composer-input-wrap">
+        <svg class="composer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input id="messageInput" placeholder="Describe your incident or ask a question…" aria-label="Message" />
+      </div>
+      <button class="btn-send" id="sendBtn" title="Send" aria-label="Send message">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </main>
 
-        /* ================= THREAT UTILS ================= */
-        function getThreatBadgeHTML(level) {
-            const levels = {
-                "Low": "threat-low",
-                "Medium": "threat-medium",
-                "High": "threat-high",
-                "Urgent": "threat-urgent"
-            };
-            const cssClass = levels[level] || "threat-low";
-            const icon = level === "High" || level === "Urgent" ? '<i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-shield-alt"></i>';
-            return `<div class="threat-badge ${cssClass}">${icon} ${level} Threat</div>`;
-        }
+</div>
 
-        /* ================= CHAT LOGIC ================= */
-        function addMessage(content, type, isStructured = false) {
-            const msg = document.createElement("div");
-            msg.className = "message " + type + " fade-in-up";
+<script>
+  const username = localStorage.getItem("username");
+  if (!username) location.href = "login.html";
 
-            const avatarIcon = type === "user" ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
-            const name = type === "user" ? "You" : "CyberGuard Core";
+  document.getElementById("userName").innerText = username;
+  const letter = username ? username[0].toUpperCase() : "U";
+  document.getElementById("userAvatarLetter").innerText = letter;
 
-            let innerContent = "";
+  const pane = document.getElementById("pane");
+  const input = document.getElementById("messageInput");
+  const STORAGE_KEY = `chat_${username}`;
 
-            if (isStructured && typeof content === 'object') {
-                // STRUCTURED RESPONSE BUILDER
-                innerContent = `
-                    <div class="msg-card">
-                        ${content.threatLevel ? getThreatBadgeHTML(content.threatLevel) : ''}
-                        
-                        ${content.emotionalMsg ? `<div class="emotional-support">${content.emotionalMsg}</div>` : ''}
-                        
-                        <div class="main-explanation">
-                            ${formatMessage(content.message)}
-                        </div>
+  function formatMessage(text) {
+    if (!text) return "";
+    text = text
+      .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
+      .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
+      .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
+      .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+      .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+      .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+      .replace(/\*\*(.*?)\*\*/gim, "<b>$1</b>")
+      .replace(/\*(.*?)\*/gim, "<i>$1</i>")
+      .replace(/^\s*-\s+(.*)$/gim, "<li>$1</li>")
+      .replace(/(<li>.*<\/li>)/gim, "<ul>$1</ul>")
+      .replace(/^\s*\d+\.\s+(.*)$/gim, "<li>$1</li>")
+      .replace(/(<li>.*<\/li>)/gim, "<ol>$1</ol>")
+      .replace(/^> (.*)$/gim, "<blockquote>$1</blockquote>")
+      .replace(/^---$/gim, "<hr>");
+    return text;
+  }
 
-                        ${content.actions ? `
-                            <div class="action-steps">
-                                ${content.actions.map((step, i) => `
-                                    <div class="action-step-item">
-                                        <div class="step-number">${i + 1}</div>
-                                        <div>${step}</div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
+  function saveChat() { localStorage.setItem(STORAGE_KEY, pane.innerHTML); }
 
-                        ${content.showHelpline ? `
-                            <div class="helpline-box" onclick="window.location.href='tel:1930'">
-                                <div class="helpline-icon"><i class="fas fa-phone-alt"></i></div>
-                                <div class="helpline-text">
-                                    <div class="helpline-title">Cyber Crime Helpline</div>
-                                    <div class="helpline-number">1930 (Immediate Assistance)</div>
-                                </div>
-                            </div>
-                        ` : ''}
+  function loadChat() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      pane.innerHTML = saved;
+      pane.scrollTop = pane.scrollHeight;
+    }
+  }
 
-                        ${content.redirect ? `
-                             <button class="action-btn" style="background:var(--accent-warning); color:#000; font-weight:bold; margin-top:8px;" onclick="goToComplaint()">
-                                <i class="fas fa-exclamation-triangle"></i> File Cyber Complaint
-                            </button>
-                        ` : ''}
-                    </div>
-                `;
-            } else {
-                // PLAIN TEXT FALLBACK
-                innerContent = formatMessage(content);
-            }
+  function hideEmpty() {
+    const empty = document.getElementById("emptyState");
+    if (empty) empty.remove();
+  }
 
-            msg.innerHTML = `
-                <div class="msg-avatar">${avatarIcon}</div>
-                <div class="msg-bubble">
-                    <div class="msg-header">${name} • ${getCurrentTime()}</div>
-                    ${innerContent}
-                </div>
-            `;
-            pane.appendChild(msg);
-            pane.scrollTop = pane.scrollHeight;
-            saveChat();
-        }
+  function addMessage(text, type) {
+    hideEmpty();
+    const msg = document.createElement("div");
+    msg.className = "message " + type;
+    const avatarLabel = type === "user" ? (username ? username[0].toUpperCase() : "U") : "AI";
+    msg.innerHTML = `
+      <div class="avatar">${avatarLabel}</div>
+      <div class="bubble">${formatMessage(text)}</div>
+    `;
+    pane.appendChild(msg);
+    pane.scrollTop = pane.scrollHeight;
+    saveChat();
+  }
 
-        async function sendMessage() {
-            const text = input.value.trim();
-            if (!text) return;
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
 
-            addMessage(text, "user");
-            input.value = "";
+    addMessage(text, "user");
+    input.value = "";
 
-            // Typing Indicator
-            const typing = document.createElement("div");
-            typing.className = "message bot";
-            typing.id = "typingIndicator";
-            typing.innerHTML = `
-                <div class="msg-avatar"><i class="fas fa-robot"></i></div>
-                <div class="msg-bubble">
-                    <div class="typing-dots">
-                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-                    </div>
-                </div>
-            `;
-            pane.appendChild(typing);
-            pane.scrollTop = pane.scrollHeight;
+    const typing = document.createElement("div");
+    typing.className = "message bot";
+    typing.innerHTML = `
+      <div class="avatar">AI</div>
+      <div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>
+    `;
+    pane.appendChild(typing);
+    pane.scrollTop = pane.scrollHeight;
 
-            // SIMULATE STRUCTURED RESPONSE FOR DEMO
-            // In a real app, this logic would be in the backend
-            const lowerText = text.toLowerCase();
-            if (lowerText.includes("scan") || lowerText.includes("threat") || lowerText.includes("hack") || lowerText.includes("virus")) {
-                setTimeout(() => {
-                    typing.remove();
-                    const mockResponse = {
-                        threatLevel: "High",
-                        emotionalMsg: "I understand this is alarming. Stay calm, we are securing your perimeter.",
-                        message: "We have detected potential malicious activity consistent with a standardized attack vector. Your system may be compromised.",
-                        actions: [
-                            "Disconnect your device from the internet immediately.",
-                            "Do not log into any banking or sensitive accounts.",
-                            "Run a full system offline scan.",
-                            "Contact your IT department or a cyber specialist."
-                        ],
-                        showHelpline: true,
-                        redirect: false
-                    };
-                    addMessage(mockResponse, "bot", true);
-                }, 1500);
-                return;
-            } else if (lowerText.includes("help") || lowerText.includes("support")) {
-                setTimeout(() => {
-                    typing.remove();
-                    const mockResponse = {
-                        threatLevel: "Medium",
-                        emotionalMsg: "We are here to assist you. Let's resolve this together.",
-                        message: "If you believe you have been a victim of cyber fraud, immediate action is required to minimize damage.",
-                        actions: [
-                            "Gather all evidence (screenshots, transaction IDs).",
-                            "Report the incident to the official portal.",
-                            "Block relevant bank cards or accounts."
-                        ],
-                        showHelpline: true,
-                        redirect: true
-                    };
-                    addMessage(mockResponse, "bot", true);
-                }, 1500);
-                return;
-            }
+    const res = await fetch("http://127.0.0.1:8000/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: text, username })
+    });
 
-            // STANDARD API CALL
-            try {
-                const res = await fetch("https://cyberguard-api-zxry.onrender.com/query", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ query: text, username })
-                });
+    const data = await res.json();
+    typing.remove();
 
-                const data = await res.json();
-                typing.remove();
+    if (data.redirect === true) {
+      addComplaintButton(data.answer);
+      return;
+    }
 
-                if (data.redirect === true) {
-                    // Fallback to structured format even for redirect
-                    const structuredData = {
-                        threatLevel: "Medium",
-                        emotionalMsg: "Let's get this reported immediately.",
-                        message: data.answer,
-                        actions: [],
-                        showHelpline: false,
-                        redirect: true
-                    };
-                    addMessage(structuredData, "bot", true);
-                    return;
-                }
+    addMessage(data.answer, "bot");
+  }
 
-                // If standard text, check if we can enhance it slightly or just show as text
-                addMessage(data.answer, "bot");
+  function addComplaintButton(answerText) {
+    hideEmpty();
+    const msg = document.createElement("div");
+    msg.className = "message bot";
+    msg.innerHTML = `
+      <div class="avatar">AI</div>
+      <div class="bubble">
+        ${formatMessage(answerText)}
+        <br>
+        <button class="btn-complaint" onclick="goToComplaint()">
+          🛡️ File Cyber Complaint
+        </button>
+      </div>
+    `;
+    pane.appendChild(msg);
+    pane.scrollTop = pane.scrollHeight;
+    saveChat();
+  }
 
-            } catch (err) {
-                typing.remove();
-                addMessage("⚠️ Connection Error: Unable to reach threat intelligence server.", "bot");
-            }
-        }
+  function goToComplaint() { window.location.href = "complaint.html"; }
 
-        function goToComplaint() {
-            window.location.href = "complaint.html";
-        }
+  loadChat();
 
-        /* ================= RETURN FROM COMPLAINT ================= */
-        loadChat();
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("from") === "complaint") {
+    addMessage("✅ Your cyber complaint has been submitted successfully. Our cyber team will contact you shortly.", "bot");
+    history.replaceState(null, "", "index.html");
+  }
 
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("from") === "complaint") {
-            addMessage(
-                "✅ Complaint logged in secure database. Investigation initiated.",
-                "bot"
-            );
-            history.replaceState(null, "", "index.html");
-        }
+  document.getElementById("sendBtn").onclick = sendMessage;
+  input.addEventListener("keydown", e => e.key === "Enter" && sendMessage());
 
-        /* ================= EVENTS ================= */
-        document.getElementById("sendBtn").onclick = sendMessage;
-        input.addEventListener("keydown", e => e.key === "Enter" && sendMessage());
-
-        function clearChat() {
-            localStorage.removeItem(STORAGE_KEY);
-            pane.innerHTML = `
-                <div class="message bot">
-                    <div class="msg-avatar"><i class="fas fa-robot"></i></div>
-                    <div class="msg-bubble">
-                        <div class="msg-header">CyberGuard Core • ${getCurrentTime()}</div>
-                        Session cleared. System online.
-                    </div>
-                </div>
-            `;
-        }
-
-        function logout() {
-            localStorage.removeItem("username");
-            location.href = "login.html";
-        }
-    </script>
+  function clearChat() {
+    localStorage.removeItem(STORAGE_KEY);
+    pane.innerHTML = `<div class="empty-state" id="emptyState"><div class="empty-icon">🛡️</div><p>Start a conversation to get expert cyber support</p></div>`;
+  }
+  function logout() { localStorage.removeItem("username"); location.href = "login.html"; }
+</script>
 </body>
-
-
 </html>

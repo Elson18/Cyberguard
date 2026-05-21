@@ -1,114 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cybersecurity Incident Report</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="style2.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EchoVision — File Incident Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
+<body class="page-auth">
 
-<body>
+<div class="bg-canvas" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-blob bg-blob--blue"></div>
+  <div class="bg-blob bg-blob--cyan"></div>
+</div>
 
-    <form class="contact-form" id="incidentForm" enctype="multipart/form-data">
+<div class="auth-card auth-card--wide">
+  <div class="card-header">
+    <div class="header-icon">🚨</div>
+    <div>
+      <div class="header-title">Cybersecurity Incident Report</div>
+      <div class="header-sub">Your report is encrypted and secure</div>
+    </div>
+  </div>
 
-        <div class="contact-label">Cybersecurity Incident Report</div>
+  <div class="alert" id="alertBox"></div>
 
-        <!-- Full Name -->
-        <div class="input-box">
-            <i class="fas fa-user input-icon"></i>
-            <input type="text" name="fullname" placeholder=" " required>
-            <label>Full Name</label>
-        </div>
+  <form id="incidentForm" enctype="multipart/form-data">
 
-        <!-- Email -->
-        <div class="input-box">
-            <i class="fas fa-envelope input-icon"></i>
-            <input type="email" name="email" placeholder=" " required>
-            <label>Email Address</label>
-        </div>
+    <div class="input-box">
+      <label class="input-label" for="fullname">Full Name</label>
+      <div class="input-inner">
+        <i class="fas fa-user input-icon" aria-hidden="true"></i>
+        <input type="text" id="fullname" name="fullname" placeholder="John Doe" required>
+      </div>
+    </div>
 
-        <!-- Phone -->
-        <div class="input-box">
-            <i class="fas fa-phone input-icon"></i>
-            <input type="tel" name="phone" placeholder=" " required>
-            <label>Phone Number</label>
-        </div>
+    <div class="input-box">
+      <label class="input-label" for="email">Email Address</label>
+      <div class="input-inner">
+        <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+      </div>
+    </div>
 
-        <!-- Incident Type -->
-        <div class="input-box">
-            <i class="fas fa-shield-alt input-icon"></i>
-            <select name="incident_type" required>
-                <option value="" disabled selected></option>
-                <option>Online Fraud</option>
-                <option>Phishing</option>
-                <option>Hacking Attempt</option>
-                <option>Identity Theft</option>
-                <option>Malware / Virus</option>
-                <option>Cyber Bullying</option>
-                <option>Other</option>
-            </select>
-            <label>Type of Cyber Incident</label>
-        </div>
+    <div class="input-box">
+      <label class="input-label" for="phone">Phone Number</label>
+      <div class="input-inner">
+        <i class="fas fa-phone input-icon" aria-hidden="true"></i>
+        <input type="tel" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" required>
+      </div>
+    </div>
 
-        <!-- Incident Description -->
-        <div class="input-box feedback-field">
-            <i class="fas fa-file-alt input-icon"></i>
-            <textarea name="description" placeholder=" " required></textarea>
-            <label>Incident Description</label>
-        </div>
+    <div class="input-box">
+      <label class="input-label" for="incident_type">Type of Cyber Incident</label>
+      <div class="input-inner" style="position:relative">
+        <i class="fas fa-shield-alt input-icon" aria-hidden="true"></i>
+        <select id="incident_type" name="incident_type" required>
+          <option value="" disabled selected>Select incident type…</option>
+          <option>Online Fraud</option>
+          <option>Phishing</option>
+          <option>Hacking Attempt</option>
+          <option>Identity Theft</option>
+          <option>Malware / Virus</option>
+          <option>Cyber Bullying</option>
+          <option>Other</option>
+        </select>
+        <i class="fas fa-chevron-down select-arrow" aria-hidden="true"></i>
+      </div>
+    </div>
 
-        <!-- Screenshot Upload -->
-        <div class="input-box">
-            <!-- <i class="fas fa-image input-icon "></i> -->
-            <input type="file" name="screenshot" accept="image/*" multiple required>
-            <label>Upload Screenshot Evidence</label>
-        </div>
+    <div class="input-box">
+      <label class="input-label" for="description">Incident Description</label>
+      <div class="input-inner">
+        <i class="fas fa-file-alt input-icon" style="top:18px; transform:none;" aria-hidden="true"></i>
+        <textarea id="description" name="description" placeholder="Describe the incident in detail…" required style="padding-left:42px;"></textarea>
+      </div>
+    </div>
 
-        <!-- Submit -->
-        <button type="submit" class="btn-submit">
-            Report Incident
-        </button>
+    <div class="input-box">
+      <label class="input-label">Upload Evidence (Screenshots)</label>
+      <div class="file-upload-area" id="dropZone">
+        <input type="file" name="screenshot" accept="image/*" multiple required id="fileInput">
+        <div class="file-upload-icon">📎</div>
+        <div class="file-upload-text" id="fileLabel">Click to upload or drag & drop</div>
+        <div class="file-upload-sub">PNG, JPG, GIF up to 10MB</div>
+      </div>
+    </div>
 
-    </form>
-    <script>
-        const username = localStorage.getItem("username");
-        if (!username) location.href = "login.html";
+    <button type="submit" class="btn-submit">Report Incident</button>
 
-        document.getElementById("incidentForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
+  </form>
 
-            const formData = new FormData(e.target);
+  <a href="index.html" class="back-link">← Back to Chat</a>
+</div>
 
-            try {
-                const res = await fetch("https://cyberguard-api-zxry.onrender.com/report", {
-                    method: "POST",
-                    body: formData
-                });
+<script>
+  const username = localStorage.getItem("username");
+  if (!username) location.href = "login.html";
 
-                if (!res.ok) {
-                    alert("❌ Failed to submit incident");
-                    return;
-                }
+  document.getElementById("fileInput").addEventListener("change", function() {
+    const count = this.files.length;
+    document.getElementById("fileLabel").textContent =
+      count > 0 ? `${count} file${count > 1 ? 's' : ''} selected` : "Click to upload or drag & drop";
+  });
 
-                alert("✅ Incident reported successfully!\nCyber team has been notified.");
+  function showAlert(msg, type = "error") {
+    const el = document.getElementById("alertBox");
+    el.textContent = msg;
+    el.className = `alert ${type} show`;
+    if (type === "error") setTimeout(() => el.classList.remove("show"), 4000);
+  }
 
-                // ✅ IMPORTANT: redirect with flag
-                window.location.href = "index.html?from=complaint";
+  document.getElementById("incidentForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
 
-            } catch (err) {
-                alert("⚠️ Server error. Please try again later.");
-                console.error(err);
-            }
-        });
-    </script>
+    const formData = new FormData(e.target);
 
+    try {
+      const res = await fetch("http://127.0.0.1:8000/report", {
+        method: "POST",
+        body: formData
+      });
 
+      if (!res.ok) {
+        showAlert("Failed to submit incident. Please try again.");
+        return;
+      }
 
+      showAlert("Incident reported successfully. Cyber team has been notified.", "success");
+      setTimeout(() => window.location.href = "index.html?from=complaint", 1800);
+
+    } catch (err) {
+      showAlert("Server error. Please try again later.");
+      console.error(err);
+    }
+  });
+</script>
 </body>
-
-
 </html>
