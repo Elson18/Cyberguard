@@ -64,7 +64,7 @@ function login() {
 
   if (!identifier || !password) { showAlert("Please fill all fields"); return; }
 
-  fetch("https://cyberguard-api-zxry.onrender.com//login", {
+  fetch("https://cyberguard-api-zxry.onrender.com/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ identifier, password })
