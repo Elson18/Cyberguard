@@ -1,0 +1,105 @@
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useI18n } from '../context/I18nContext';
+
+export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
+  const { username, logout } = useAuth();
+  const { t } = useI18n();
+  const navigate = useNavigate();
+
+  const avatarLetter = username ? username[0].toUpperCase() : 'U';
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  return (
+    <aside className="sidebar">
+      <div className="logo-wrap">
+        <div className="logo-icon">CG</div>
+        <div className="logo-text">
+          <strong>CyberGuard</strong>
+          <span>Multilingual CyberCrime Support<br />RAG + Agentic AI</span>
+        </div>
+      </div>
+
+      <div className="status-bar">
+        <div className="status-dot"></div>
+        <span className="status-text">{t('sidebar_status', 'SYSTEM ACTIVE')}</span>
+      </div>
+
+      {onNewSession && (
+        <button className="btn-new" onClick={onNewSession} type="button">
+          {t('sidebar_new_session', '+ New Session')}
+        </button>
+      )}
+
+      <nav className="sidebar-nav" aria-label="Main navigation">
+        <NavLink
+          to="/"
+          className={({ isActive }) => `sidebar-nav__link ${isActive && activePage === 'dashboard' ? 'is-active' : ''}`}
+        >
+          <i className="fa-solid fa-gauge-high"></i>
+          <span>{t('nav_dashboard', 'Dashboard')}</span>
+        </NavLink>
+
+        <NavLink
+          to="/extension"
+          className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
+        >
+          <i className="fa-solid fa-puzzle-piece"></i>
+          <span>{t('nav_extension', 'Download Extension')}</span>
+        </NavLink>
+
+        <NavLink
+          to="/complaint"
+          className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
+        >
+          <i className="fa-solid fa-file-circle-exclamation"></i>
+          <span>{t('nav_complaint', 'File Complaint')}</span>
+        </NavLink>
+
+        <NavLink
+          to="/settings"
+          className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
+        >
+          <i className="fa-solid fa-gear"></i>
+          <span>{t('nav_settings', 'Settings')}</span>
+        </NavLink>
+      </nav>
+
+      <div className="sidebar-panel">
+        <div className="sidebar-panel-title">{t('sidebar_system_status', 'System Status')}</div>
+        <div className="sidebar-stat">
+          <span>{t('sidebar_rag', 'RAG Engine')}</span>
+          <span className="online">{t('sidebar_online', '● Online')}</span>
+        </div>
+        <div className="sidebar-stat">
+          <span>{t('sidebar_ai', 'AI Model')}</span>
+          <span className="online">{t('sidebar_active', '● Active')}</span>
+        </div>
+        <div className="sidebar-stat">
+          <span>{t('sidebar_threatdb', 'Threat DB')}</span>
+          <span className="online">{t('sidebar_synced', '● Synced')}</span>
+        </div>
+      </div>
+
+      <div className="sidebar-footer">
+        <div className="user-row">
+          <div className="user-info">
+            <div className="user-avatar">{avatarLetter}</div>
+            <div>
+              <div className="user-name">{username || '—'}</div>
+              <div className="user-label">● Active</div>
+            </div>
+          </div>
+          <button className="btn-logout" onClick={handleLogout} type="button">
+            {t('btn_exit', 'Exit')}
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+}

@@ -1,25 +1,21 @@
-# CyberGuard Web Frontend
+# CyberGuard React Frontend
 
-Standalone web frontend for CyberGuard Multilingual Cybercrime Support & Incident Response Platform.
+Modern React.js (Vite) single-page application for the CyberGuard Multilingual Cybercrime Support Platform.
 
-## Running Standalone
+## Features
 
-To run the frontend independently:
+- **React Router v6**: Single-page navigation (`/`, `/login`, `/signin`, `/complaint`, `/extension`, `/settings`).
+- **Multilingual Support**: Supports 19 Indian & International languages with dynamic auto-detection and RTL switching.
+- **AI Chat Dashboard**: Markdown parsing (`marked`), thread history persistence, threat severity warning badges, and helpline assistance.
+- **Incident Reporting**: Multi-file evidence dropzone upload.
+- **Auth Context**: Persisted authentication & session manager.
+
+## Getting Started
 
 ```bash
-python run_frontend.py
-```
-Or using standard Python HTTP server:
-```bash
-python -m http.server 8000
+npm install
+npm run dev
 ```
 
-Access in browser at: `http://localhost:8000`
-
-## Configuration
-
-Backend API connection is configured in `config.js`:
-```js
-window.CYBERGUARD_API_URL = window.CYBERGUARD_API_URL || 'http://127.0.0.1:8765';
-```
-Change this value when deploying backend API to production servers.
+Runs at `http://localhost:5173`.
+Connects to FastAPI backend at `http://127.0.0.1:8765`.
