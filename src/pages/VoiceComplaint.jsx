@@ -352,7 +352,7 @@ export function VoiceComplaint() {
       );
     } else {
       try {
-        const res = await fetch('http://localhost:8765/api/complaint/submit-voice', {
+        const res = await fetch('https://cvmqhx7t-8765.inc1.devtunnels.ms/api/complaint/submit-voice', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(complaintSummary),
@@ -433,7 +433,7 @@ Notice: Formally registered in the CyberGuard National Security Database.
           <div className="brand-logo">🛡️</div>
           <span className="brand-title">CyberGuard</span>
         </Link>
-        <div className="va-header-tag">Multilingual AI Voice Assistant</div>
+        <div className="va-header-tag">Voice Help</div>
       </header>
 
       <main className="va-content">
@@ -441,7 +441,7 @@ Notice: Formally registered in the CyberGuard National Security Database.
         {screenStep === 'WELCOME' && (
           <div className="va-card welcome-card">
             <div className="welcome-badge">
-              <i className="fas fa-sparkles" /> Multilingual AI Voice Assistant
+              <i className="fas fa-sparkles" /> Voice Help
             </div>
 
             <h1 className="welcome-heading">How can we help you today?</h1>

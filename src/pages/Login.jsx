@@ -56,11 +56,11 @@ export function Login() {
         <div className="card-logo">
           <div className="logo-icon">CG</div>
           <div className="logo-name">CyberGuard</div>
-          <div className="logo-sub">Cybercrime Support Platform</div>
+          <div className="logo-sub">Stay Safe Online</div>
         </div>
 
         <div className="divider">
-          <span>Secure Login</span>
+          <span>Sign In</span>
         </div>
 
         {alertMsg && <div className="alert show">{alertMsg}</div>}
@@ -76,7 +76,7 @@ export function Login() {
               <input
                 type="text"
                 id="username"
-                placeholder="Enter identifier…"
+                placeholder="Your name or email"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 autoComplete="username"
@@ -94,7 +94,7 @@ export function Login() {
               <input
                 type="password"
                 id="password"
-                placeholder="Enter password…"
+                placeholder="Your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
@@ -103,7 +103,7 @@ export function Login() {
           </div>
 
           <button className="btn-login" type="submit" disabled={loading}>
-            {loading ? 'Authenticating…' : 'Access System →'}
+            {loading ? 'Please wait…' : 'Sign In'}
           </button>
         </form>
 
@@ -112,7 +112,7 @@ export function Login() {
             Forgot Password?
           </a>
           <Link to="/signin">
-            No account? <span>Create one →</span>
+            New here? <span>Sign Up →</span>
           </Link>
         </div>
       </div>

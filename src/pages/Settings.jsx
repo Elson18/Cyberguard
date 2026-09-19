@@ -77,16 +77,10 @@ export function Settings() {
       <main className="main">
         <div className="main-header">
           <div>
-            <div className="main-title">{t('settings_title', 'Security Settings')}</div>
-            <div className="main-subtitle">
-              {t('settings_subtitle', 'Manage your profile identity, regional localization, authentication standards, and active sessions.')}
-            </div>
+            <div className="main-title">{t('settings_title', 'Settings')}</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <LanguageSelector />
-            <div className="tag" style={{ background: 'rgba(37, 99, 235, 0.08)', color: 'var(--primary)', border: '1px solid rgba(37, 99, 235, 0.18)', fontWeight: 600 }}>
-              Account Active
-            </div>
           </div>
         </div>
 
@@ -103,7 +97,6 @@ export function Settings() {
                 </div>
                 <div>
                   <h3 className="settings-card__title">User Profile</h3>
-                  <p className="settings-card__sub">Account identity and access authorization.</p>
                 </div>
               </div>
 
@@ -112,12 +105,8 @@ export function Settings() {
                   {avatarLetter}
                 </div>
                 <div>
-                  <div className="settings-profile__name">{username || 'elsonaron24@gmail.com'}</div>
-                  <div className="settings-profile__meta">ID: {userId || 'USER-F6FD2100'} · Primary Account</div>
-                  <div className="settings-role">
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
-                    Full Protection Active
-                  </div>
+                  <div className="settings-profile__name">{username || 'User'}</div>
+                  <div className="settings-profile__meta">ID: {userId || 'USER-001'}</div>
                 </div>
               </div>
             </section>
@@ -131,8 +120,7 @@ export function Settings() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="settings-card__title">Language & Localization</h3>
-                  <p className="settings-card__sub">Select your preferred system display language.</p>
+                  <h3 className="settings-card__title">Language</h3>
                 </div>
               </div>
 
@@ -184,8 +172,7 @@ export function Settings() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="settings-card__title">Theme Aesthetic</h3>
-                  <p className="settings-card__sub">Choose visual glassmorphism style for interface.</p>
+                  <h3 className="settings-card__title">Look & Feel</h3>
                 </div>
               </div>
 
@@ -216,16 +203,15 @@ export function Settings() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="settings-card__title">Security Authentication</h3>
-                  <p className="settings-card__sub">Configure multi-factor and biometric security locks.</p>
+                  <h3 className="settings-card__title">Security</h3>
                 </div>
               </div>
 
               <div className="settings-toggle-list">
                 <div className="settings-toggle">
                   <div className="settings-toggle__label">
-                    <strong>Two-Factor Authentication (2FA)</strong>
-                    <span>Require TOTP verification code on login attempts</span>
+                    <strong>Extra Login Security</strong>
+                    <span>Get a code on login</span>
                   </div>
                   <label className="settings-switch">
                     <input
@@ -239,8 +225,8 @@ export function Settings() {
 
                 <div className="settings-toggle" style={{ borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
                   <div className="settings-toggle__label">
-                    <strong>Biometric Login</strong>
-                    <span>Use Windows Hello, Touch ID, or FIDO2 key</span>
+                    <strong>Fingerprint / Face Login</strong>
+                    <span>Use fingerprint or face unlock</span>
                   </div>
                   <label className="settings-switch">
                     <input
@@ -264,7 +250,6 @@ export function Settings() {
                 </div>
                 <div>
                   <h3 className="settings-card__title">Change Password</h3>
-                  <p className="settings-card__sub">Update account access credentials.</p>
                 </div>
               </div>
 
@@ -316,8 +301,7 @@ export function Settings() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="settings-card__title">Active Connected Sessions</h3>
-                  <p className="settings-card__sub">Devices currently authenticated to your CyberGuard identity.</p>
+                  <h3 className="settings-card__title">Your Devices</h3>
                 </div>
               </div>
 
@@ -358,7 +342,7 @@ export function Settings() {
                         style={{ color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.25)', background: 'rgba(239, 68, 68, 0.04)', fontSize: '0.75rem', padding: '6px 12px' }}
                         onClick={() => handleRemoveSession(s.id)}
                       >
-                        Terminate Session
+                        Remove
                       </button>
                     )}
                   </div>

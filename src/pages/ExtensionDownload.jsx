@@ -38,12 +38,11 @@ export function ExtensionDownload() {
 
         {/* 4. TOP BAR */}
         <header className="top-bar">
-          <div className="top-bar-title">Extension</div>
+          <div className="top-bar-title">Browser Protection</div>
           <div className="top-bar-meta">
             <span className="status-indicator">
-              <span className="dot-green"></span> Protection Active
+              <span className="dot-green"></span> Protection Ready
             </span>
-            <span className="ver-tag">v1.0.0</span>
           </div>
         </header>
 
@@ -51,18 +50,12 @@ export function ExtensionDownload() {
           {/* 5. HERO SECTION & 6. RIGHT SIDE VISUAL */}
           <section className="saas-hero">
             <div className="saas-hero-content">
-              <span className="saas-eyebrow">CYBERGUARD EXTENSION</span>
               <h1 className="saas-hero-heading">
-                Protect every click<br />with CyberGuard.
+                Protect Your Browser
               </h1>
               <p className="saas-hero-sub">
-                Real-time protection against malicious websites, phishing attempts, suspicious URLs, and online threats.
+                Block bad websites automatically and stay safe while surfing the web.
               </p>
-
-              <div className="saas-badge-row">
-                <span className="saas-neutral-badge">Chrome Extension</span>
-                <span className="saas-neutral-badge">Manifest V3</span>
-              </div>
 
               <div className="saas-cta-group">
                 <a
@@ -87,12 +80,12 @@ export function ExtensionDownload() {
                   className="btn-saas-link"
                   onClick={scrollToInstallation}
                 >
-                  Installation guide →
+                  How to install →
                 </button>
               </div>
             </div>
 
-            {/* 6. RIGHT SIDE HERO VISUAL - SOPHISTICATED PRODUCT PREVIEW */}
+            {/* 6. RIGHT SIDE HERO VISUAL */}
             <div className="saas-hero-visual">
               <div className="saas-preview-frame">
                 <div className="preview-chrome-header">
@@ -114,20 +107,16 @@ export function ExtensionDownload() {
 
                   <div className="preview-rows">
                     <div className="preview-row">
-                      <span className="p-label">Website Protection</span>
-                      <span className="p-val val-green">● Protected</span>
+                      <span className="p-label">Website Security</span>
+                      <span className="p-val val-green">● Safe</span>
                     </div>
                     <div className="preview-row">
-                      <span className="p-label">Threat level</span>
-                      <span className="p-val val-blue">LOW</span>
+                      <span className="p-label">Threat Status</span>
+                      <span className="p-val val-blue">No Risk</span>
                     </div>
                     <div className="preview-row">
-                      <span className="p-label">URL reputation</span>
-                      <span className="p-val val-neutral">Verified</span>
-                    </div>
-                    <div className="preview-row">
-                      <span className="p-label">AI analysis</span>
-                      <span className="p-val val-dark">No malicious content detected</span>
+                      <span className="p-label">Website Check</span>
+                      <span className="p-val val-neutral">Verified Safe</span>
                     </div>
                   </div>
                 </div>
@@ -139,9 +128,8 @@ export function ExtensionDownload() {
           <section className="saas-utility-grid">
             <div className="saas-panel download-panel">
               <div className="panel-left">
-                <h3>CyberGuard Chrome Extension</h3>
-                <p className="panel-meta-text">Version 1.0.0 · Chrome · Manifest V3</p>
-                <p className="panel-sub-meta">Size: 12.4 MB · Updated: Recently</p>
+                <h3>CyberGuard Extension</h3>
+                <p className="panel-meta-text">Free browser guard for Google Chrome</p>
               </div>
               <div className="panel-right">
                 <a
@@ -150,7 +138,7 @@ export function ExtensionDownload() {
                   download="CyberGuard.zip"
                   onClick={handleDownload}
                 >
-                  <i className="fa-solid fa-download"></i> Download Extension
+                  <i className="fa-solid fa-download"></i> Download
                 </a>
               </div>
             </div>
@@ -167,7 +155,7 @@ export function ExtensionDownload() {
                   className="btn-saas-secondary btn-sm"
                   onClick={handleCopyChromeUrl}
                 >
-                  <i className="fa-brands fa-chrome"></i> Open Extensions
+                  <i className="fa-brands fa-chrome"></i> Copy Link
                 </button>
               </div>
             </div>
@@ -176,36 +164,36 @@ export function ExtensionDownload() {
           {/* 7. INSTALLATION SECTION */}
           <section id="installation-steps" className="saas-section">
             <div className="section-header">
-              <h2>Install CyberGuard in minutes</h2>
-              <p>Set up browser protection in four simple steps.</p>
+              <h2>Install in 4 Easy Steps</h2>
+              <p>Follow these quick steps to enable browser protection.</p>
             </div>
 
             <div className="horizontal-flow-grid">
               <div className="flow-step">
                 <span className="step-index">01</span>
                 <h4>Download</h4>
-                <p>Download the CyberGuard package.</p>
+                <p>Click the download button above.</p>
               </div>
               <div className="flow-connector" aria-hidden="true"></div>
 
               <div className="flow-step">
                 <span className="step-index">02</span>
-                <h4>Extract</h4>
-                <p>Extract the ZIP file.</p>
+                <h4>Unzip</h4>
+                <p>Open and extract the ZIP file.</p>
               </div>
               <div className="flow-connector" aria-hidden="true"></div>
 
               <div className="flow-step">
                 <span className="step-index">03</span>
-                <h4>Enable Developer Mode</h4>
-                <p>Open <code>chrome://extensions</code> and enable Developer Mode.</p>
+                <h4>Open Extensions</h4>
+                <p>Go to <code>chrome://extensions</code> in Chrome and turn on Developer mode.</p>
               </div>
               <div className="flow-connector" aria-hidden="true"></div>
 
               <div className="flow-step">
                 <span className="step-index">04</span>
                 <h4>Load Extension</h4>
-                <p>Select the extracted CyberGuard folder.</p>
+                <p>Click "Load unpacked" and select the unzipped folder.</p>
               </div>
             </div>
           </section>
@@ -213,7 +201,7 @@ export function ExtensionDownload() {
           {/* 10. SECURITY CAPABILITIES */}
           <section className="saas-section">
             <div className="section-header">
-              <h2>Built for safer browsing</h2>
+              <h2>Features</h2>
             </div>
 
             <div className="capabilities-grid">
@@ -221,53 +209,32 @@ export function ExtensionDownload() {
                 <div className="cap-icon">
                   <i className="fa-solid fa-shield-halved"></i>
                 </div>
-                <h4>Real-time detection</h4>
-                <p>Detect suspicious websites as you browse.</p>
+                <h4>Real-time Blocking</h4>
+                <p>Warns you before you visit dangerous websites.</p>
               </div>
 
               <div className="capability-card">
                 <div className="cap-icon">
                   <i className="fa-solid fa-link"></i>
                 </div>
-                <h4>URL reputation</h4>
-                <p>Analyze URLs before you interact with them.</p>
+                <h4>Link Checking</h4>
+                <p>Checks link safety automatically.</p>
               </div>
 
               <div className="capability-card">
                 <div className="cap-icon">
                   <i className="fa-solid fa-brain"></i>
                 </div>
-                <h4>AI threat analysis</h4>
-                <p>Classify potentially malicious content using AI.</p>
+                <h4>Smart Defense</h4>
+                <p>Identifies fake and scam websites.</p>
               </div>
 
               <div className="capability-card">
                 <div className="cap-icon">
                   <i className="fa-solid fa-bell"></i>
                 </div>
-                <h4>Instant alerts</h4>
-                <p>Warn users when suspicious activity is detected.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* 11. PROTECTION STATUS */}
-          <section className="saas-status-strip">
-            <div className="strip-title">Protection systems</div>
-            <div className="strip-items">
-              <div className="strip-item">
-                <span>RAG Engine</span>
-                <span className="state-online">● Online</span>
-              </div>
-              <div className="strip-divider">•</div>
-              <div className="strip-item">
-                <span>AI Model</span>
-                <span className="state-online">● Active</span>
-              </div>
-              <div className="strip-divider">•</div>
-              <div className="strip-item">
-                <span>Threat Database</span>
-                <span className="state-online">● Synced</span>
+                <h4>Instant Alerts</h4>
+                <p>Notifies you instantly if something looks suspicious.</p>
               </div>
             </div>
           </section>

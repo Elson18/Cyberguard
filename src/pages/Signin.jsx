@@ -65,11 +65,11 @@ export function Signin() {
         <div className="card-logo">
           <div className="logo-icon">CG</div>
           <div className="logo-name">CyberGuard</div>
-          <div className="logo-sub">Create your secure account</div>
+          <div className="logo-sub">Join CyberGuard</div>
         </div>
 
         <div className="divider">
-          <span>Registration</span>
+          <span>Sign Up</span>
         </div>
 
         {alertInfo.msg && (
@@ -87,7 +87,7 @@ export function Signin() {
               <input
                 type="text"
                 id="name"
-                placeholder="Choose a username…"
+                placeholder="Your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 autoComplete="username"
@@ -141,7 +141,7 @@ export function Signin() {
               <input
                 type="password"
                 id="password"
-                placeholder="Create a strong password…"
+                placeholder="Choose a password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="new-password"
@@ -158,7 +158,7 @@ export function Signin() {
               <input
                 type="password"
                 id="re_password"
-                placeholder="Repeat password…"
+                placeholder="Type password again"
                 value={rePassword}
                 onChange={(e) => setRePassword(e.target.value)}
                 autoComplete="new-password"
@@ -167,13 +167,13 @@ export function Signin() {
           </div>
 
           <button className="btn-signup" type="submit" disabled={loading}>
-            {loading ? 'Creating Account…' : 'Create Account →'}
+            {loading ? 'Please wait…' : 'Sign Up →'}
           </button>
         </form>
 
         <div className="card-footer">
           <Link to="/login">
-            Already have an account? <span>Login →</span>
+            Have an account? <span>Sign In →</span>
           </Link>
         </div>
       </div>

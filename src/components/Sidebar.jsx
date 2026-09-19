@@ -8,7 +8,7 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
   const { t } = useI18n();
   const navigate = useNavigate();
 
-  const avatarLetter = username ? username[0].toUpperCase() : 'E';
+  const avatarLetter = username ? username[0].toUpperCase() : 'U';
 
   const handleLogout = () => {
     logout();
@@ -21,18 +21,17 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
         <div className="logo-icon">CG</div>
         <div className="logo-text">
           <strong>CyberGuard</strong>
-          <span>AI-powered cyber protection</span>
         </div>
       </div>
 
       <div className="status-bar">
         <span className="status-dot"></span>
-        <span className="status-text">Protection active</span>
+        <span className="status-text">Protected ✓</span>
       </div>
 
       {onNewSession && (
         <button className="btn-new" onClick={onNewSession} type="button">
-          {t('sidebar_new_session', '+ New Session')}
+          {t('sidebar_new_session', '＋ New Chat')}
         </button>
       )}
 
@@ -41,24 +40,24 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
           to="/"
           className={({ isActive }) => `sidebar-nav__link ${isActive && activePage === 'dashboard' ? 'is-active' : ''}`}
         >
-          <i className="fa-solid fa-gauge-high"></i>
-          <span>{t('nav_dashboard', 'Overview')}</span>
+          <i className="fa-solid fa-house"></i>
+          <span>{t('nav_dashboard', 'Home')}</span>
         </NavLink>
 
         <NavLink
           to="/extension"
           className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
         >
-          <i className="fa-solid fa-puzzle-piece"></i>
-          <span>{t('nav_extension_short', 'Extension')}</span>
+          <i className="fa-solid fa-shield-halved"></i>
+          <span>{t('nav_extension_short', 'Browser Protection')}</span>
         </NavLink>
 
         <NavLink
           to="/email-verification"
           className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
         >
-          <i className="fa-solid fa-envelope-circle-check"></i>
-          <span>{t('nav_email_verification', 'Email Verification')}</span>
+          <i className="fa-solid fa-envelope-open-text"></i>
+          <span>{t('nav_email_verification', 'Check Email')}</span>
         </NavLink>
 
         <NavLink
@@ -66,15 +65,15 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
           className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
         >
           <i className="fa-solid fa-microphone"></i>
-          <span>AI Voice Assistant</span>
+          <span>Voice Help</span>
         </NavLink>
 
         <NavLink
           to="/complaint"
           className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
         >
-          <i className="fa-solid fa-file-circle-exclamation"></i>
-          <span>{t('nav_complaint', 'File Complaint')}</span>
+          <i className="fa-solid fa-triangle-exclamation"></i>
+          <span>{t('nav_complaint', 'Report Problem')}</span>
         </NavLink>
 
         <NavLink
@@ -86,29 +85,13 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
         </NavLink>
       </nav>
 
-      <div className="sidebar-panel">
-        <div className="sidebar-panel-title">{t('sidebar_system_status', 'System Status')}</div>
-        <div className="sidebar-stat">
-          <span>RAG Engine</span>
-          <span className="online">● Online</span>
-        </div>
-        <div className="sidebar-stat">
-          <span>AI Model</span>
-          <span className="online">● Active</span>
-        </div>
-        <div className="sidebar-stat">
-          <span>Threat DB</span>
-          <span className="online">● Synced</span>
-        </div>
-      </div>
-
       <div className="sidebar-footer">
         <div className="user-row">
           <div className="user-info">
             <div className="user-avatar">{avatarLetter}</div>
             <div>
-              <div className="user-name">{username || 'Elson'}</div>
-              <div className="user-label">● Active</div>
+              <div className="user-name">{username || 'User'}</div>
+              <div className="user-label">Online</div>
             </div>
           </div>
           <button className="btn-logout" onClick={handleLogout} type="button" title="Sign Out">

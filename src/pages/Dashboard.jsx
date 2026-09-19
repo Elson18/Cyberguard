@@ -129,20 +129,18 @@ export function Dashboard() {
       <main className="main">
         <div className="main-header">
           <div>
-            <div className="main-title">{t('chat_title', 'Cyber Incident Assistant')}</div>
-            <div className="main-subtitle">{t('chat_subtitle', 'Secure end-to-end session · All data encrypted')}</div>
+            <div className="main-title">{t('chat_title', 'How can we help?')}</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <LanguageSelector />
             <Link to="/email-verification" className="btn-extension" style={{ background: 'linear-gradient(135deg, #2563eb, #3b82f6)' }} title="Verify Job Offer Email">
-              <i className="fa-solid fa-envelope-circle-check"></i>
-              <span>Verify Email</span>
+              <i className="fa-solid fa-envelope-open-text"></i>
+              <span>Check Email</span>
             </Link>
             <Link to="/extension" className="btn-extension" title="Download CyberGuard Extension">
-              <i className="fa-solid fa-puzzle-piece"></i>
-              <span>{t('chat_extension_btn', 'Extension')}</span>
+              <i className="fa-solid fa-shield-halved"></i>
+              <span>{t('chat_extension_btn', 'Protect Browser')}</span>
             </Link>
-            <div className="tag">{t('chat_ai_tag', 'AI Powered')}</div>
           </div>
         </div>
 
@@ -150,12 +148,7 @@ export function Dashboard() {
           {messages.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">🛡️</div>
-              <p>{t('chat_empty', 'Start a conversation to get expert cyber support')}</p>
-              <div style={{ marginTop: '16px', display: 'flex', gap: '12px' }}>
-                <Link to="/email-verification" className="btn-saas-secondary btn-sm" style={{ textDecoration: 'none' }}>
-                  <i className="fa-solid fa-envelope-circle-check" style={{ color: '#2563eb' }}></i> Verify Job Offer Email
-                </Link>
-              </div>
+              <p style={{ fontSize: '1.1rem', fontWeight: '500' }}>{t('chat_empty', 'Tell us what happened 👇')}</p>
             </div>
           ) : (
             messages.map((msg) => (
@@ -173,7 +166,7 @@ export function Dashboard() {
                   {msg.redirect && (
                     <div style={{ marginTop: '12px' }}>
                       <button className="btn-complaint" onClick={() => navigate('/complaint')} type="button">
-                        {t('chat_complaint_btn', '🛡️ File Cyber Complaint')}
+                        {t('chat_complaint_btn', '📝 Report This')}
                       </button>
                     </div>
                   )}
@@ -232,7 +225,7 @@ export function Dashboard() {
             </svg>
             <input
               id="messageInput"
-              placeholder={t('chat_placeholder', 'Describe your incident or ask a question…')}
+              placeholder={t('chat_placeholder', 'Type here or ask anything…')}
               aria-label="Message"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}

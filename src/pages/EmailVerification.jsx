@@ -159,6 +159,8 @@ export function EmailVerification() {
     }
   };
 
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
   return (
     <div className="app app-clean">
       <Sidebar activePage="email-verification" />
@@ -166,38 +168,28 @@ export function EmailVerification() {
       <main className="main-viewport">
         {/* TOP BAR */}
         <header className="top-bar">
-          <div className="top-bar-title">Email Verification</div>
+          <div className="top-bar-title">Check Email</div>
           <div className="top-bar-meta">
             <span className="status-indicator">
-              <span className="dot-green"></span> Verification Engine Active
+              <span className="dot-green"></span> Protection Active
             </span>
-            <span className="ver-tag">v1.0.0</span>
           </div>
         </header>
 
         <div className="saas-container">
           {/* PAGE HEADER */}
           <section className="ev-header-section">
-            <div className="ev-eyebrow">
-              <i className="fa-solid fa-shield-halved"></i> EMAIL SECURITY ENGINE
-            </div>
-            <h1 className="ev-title">EMAIL VERIFICATION</h1>
+            <h1 className="ev-title">Check a Suspicious Email</h1>
             <p className="ev-subtitle">
-              Check whether a job offer email appears to come from an authorized company representative.
+              Got a job offer or email from a recruiter? Check if it is safe and real.
             </p>
-            <div className="ev-info-callout">
-              <i className="fa-solid fa-circle-info"></i>
-              <span>
-                CyberGuard analyzes the sender, company domain, email authentication, links, and message content to identify potential recruitment scams.
-              </span>
-            </div>
           </section>
 
           {/* INPUT FORM CARD */}
           <section className="saas-panel ev-form-panel">
             <div className="ev-form-header">
-              <h2><i className="fa-solid fa-envelope-open-text"></i> Check an Email</h2>
-              <p>Enter the email headers and body content to run AI security triage.</p>
+              <h2><i className="fa-solid fa-envelope-open-text"></i> Paste Email Details</h2>
+              <p>Fill in the details below to check if the email is safe.</p>
             </div>
 
             {apiError && (
@@ -238,7 +230,7 @@ export function EmailVerification() {
 
               <div className="form-group">
                 <label htmlFor="company_name">
-                  Claimed Company Name <span className="req">*</span>
+                  Company Name <span className="req">*</span>
                 </label>
                 <input
                   type="text"
@@ -254,7 +246,7 @@ export function EmailVerification() {
 
               <div className="form-group">
                 <label htmlFor="official_domain">
-                  Official Company Domain <span className="req">*</span>
+                  Company Website / Domain <span className="req">*</span>
                 </label>
                 <input
                   type="text"
@@ -265,7 +257,6 @@ export function EmailVerification() {
                   placeholder="company.com"
                   className={`ev-input ${errors.official_domain ? 'has-error' : ''}`}
                 />
-                <span className="field-hint">If you know the company's official website domain, enter it here.</span>
                 {errors.official_domain && <span className="field-err">{errors.official_domain}</span>}
               </div>
 
@@ -279,7 +270,7 @@ export function EmailVerification() {
                   name="subject"
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder="Congratulations! You have been selected"
+                  placeholder="Job Offer / Interview Notice"
                   className={`ev-input ${errors.subject ? 'has-error' : ''}`}
                 />
                 {errors.subject && <span className="field-err">{errors.subject}</span>}
@@ -287,127 +278,153 @@ export function EmailVerification() {
 
               <div className="form-group full-width">
                 <label htmlFor="email_body">
-                  Email Content / Body <span className="req">*</span>
+                  Email Message Content <span className="req">*</span>
                 </label>
                 <textarea
                   id="email_body"
                   name="email_body"
-                  rows={6}
+                  rows={5}
                   value={formData.email_body}
                   onChange={handleChange}
-                  placeholder="Paste the complete email content here..."
+                  placeholder="Paste the email message here..."
                   className={`ev-textarea ${errors.email_body ? 'has-error' : ''}`}
                 ></textarea>
                 {errors.email_body && <span className="field-err">{errors.email_body}</span>}
               </div>
 
-              <div className="form-group">
-                <label htmlFor="reply_to">Reply-To (Optional)</label>
-                <input
-                  type="text"
-                  id="reply_to"
-                  name="reply_to"
-                  value={formData.reply_to}
-                  onChange={handleChange}
-                  placeholder="reply@company.com"
-                  className="ev-input"
-                />
+              <div className="form-group full-width" style={{ marginTop: '4px' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowAdvanced(!showAdvanced)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#2563eb',
+                    fontWeight: '600',
+                    fontSize: '0.9rem',
+                    cursor: 'pointer',
+                    padding: '4px 0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <i className={`fa-solid fa-chevron-${showAdvanced ? 'up' : 'down'}`}></i>
+                  {showAdvanced ? 'Hide More Options' : 'Show More Options (Advanced)'}
+                </button>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="return_path">Return-Path (Optional)</label>
-                <input
-                  type="text"
-                  id="return_path"
-                  name="return_path"
-                  value={formData.return_path}
-                  onChange={handleChange}
-                  placeholder="bounce@company.com"
-                  className="ev-input"
-                />
-              </div>
+              {showAdvanced && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="reply_to">Reply-To Email</label>
+                    <input
+                      type="text"
+                      id="reply_to"
+                      name="reply_to"
+                      value={formData.reply_to}
+                      onChange={handleChange}
+                      placeholder="reply@company.com"
+                      className="ev-input"
+                    />
+                  </div>
 
-              <div className="form-group-triple full-width">
-                <div className="form-group">
-                  <label htmlFor="spf">SPF Header</label>
-                  <select id="spf" name="spf" value={formData.spf} onChange={handleChange} className="ev-select">
-                    <option value="UNKNOWN">UNKNOWN</option>
-                    <option value="PASS">PASS</option>
-                    <option value="FAIL">FAIL</option>
-                    <option value="SOFTFAIL">SOFTFAIL</option>
-                    <option value="NONE">NONE</option>
-                  </select>
-                </div>
+                  <div className="form-group">
+                    <label htmlFor="return_path">Return-Path Email</label>
+                    <input
+                      type="text"
+                      id="return_path"
+                      name="return_path"
+                      value={formData.return_path}
+                      onChange={handleChange}
+                      placeholder="bounce@company.com"
+                      className="ev-input"
+                    />
+                  </div>
 
-                <div className="form-group">
-                  <label htmlFor="dkim">DKIM Header</label>
-                  <select id="dkim" name="dkim" value={formData.dkim} onChange={handleChange} className="ev-select">
-                    <option value="UNKNOWN">UNKNOWN</option>
-                    <option value="PASS">PASS</option>
-                    <option value="FAIL">FAIL</option>
-                    <option value="NONE">NONE</option>
-                  </select>
-                </div>
+                  <div className="form-group-triple full-width">
+                    <div className="form-group">
+                      <label htmlFor="spf">SPF Header</label>
+                      <select id="spf" name="spf" value={formData.spf} onChange={handleChange} className="ev-select">
+                        <option value="UNKNOWN">UNKNOWN</option>
+                        <option value="PASS">PASS</option>
+                        <option value="FAIL">FAIL</option>
+                        <option value="SOFTFAIL">SOFTFAIL</option>
+                        <option value="NONE">NONE</option>
+                      </select>
+                    </div>
 
-                <div className="form-group">
-                  <label htmlFor="dmarc">DMARC Header</label>
-                  <select id="dmarc" name="dmarc" value={formData.dmarc} onChange={handleChange} className="ev-select">
-                    <option value="UNKNOWN">UNKNOWN</option>
-                    <option value="PASS">PASS</option>
-                    <option value="FAIL">FAIL</option>
-                    <option value="NONE">NONE</option>
-                  </select>
-                </div>
-              </div>
+                    <div className="form-group">
+                      <label htmlFor="dkim">DKIM Header</label>
+                      <select id="dkim" name="dkim" value={formData.dkim} onChange={handleChange} className="ev-select">
+                        <option value="UNKNOWN">UNKNOWN</option>
+                        <option value="PASS">PASS</option>
+                        <option value="FAIL">FAIL</option>
+                        <option value="NONE">NONE</option>
+                      </select>
+                    </div>
 
-              <div className="form-group full-width">
-                <label htmlFor="urls_raw">Extracted URLs (Optional - one URL per line)</label>
-                <textarea
-                  id="urls_raw"
-                  name="urls_raw"
-                  rows={3}
-                  value={formData.urls_raw}
-                  onChange={handleChange}
-                  placeholder="https://company-careers-example.com/apply&#10;https://forms-example.com/register"
-                  className="ev-textarea mono"
-                ></textarea>
-              </div>
+                    <div className="form-group">
+                      <label htmlFor="dmarc">DMARC Header</label>
+                      <select id="dmarc" name="dmarc" value={formData.dmarc} onChange={handleChange} className="ev-select">
+                        <option value="UNKNOWN">UNKNOWN</option>
+                        <option value="PASS">PASS</option>
+                        <option value="FAIL">FAIL</option>
+                        <option value="NONE">NONE</option>
+                      </select>
+                    </div>
+                  </div>
 
-              <div className="form-group full-width">
-                <label htmlFor="offer_letter_text">Offer Letter Content (Optional)</label>
-                <textarea
-                  id="offer_letter_text"
-                  name="offer_letter_text"
-                  rows={3}
-                  value={formData.offer_letter_text}
-                  onChange={handleChange}
-                  placeholder="Paste text from attached offer letter if available..."
-                  className="ev-textarea"
-                ></textarea>
-              </div>
+                  <div className="form-group full-width">
+                    <label htmlFor="urls_raw">Links in Email (One per line)</label>
+                    <textarea
+                      id="urls_raw"
+                      name="urls_raw"
+                      rows={3}
+                      value={formData.urls_raw}
+                      onChange={handleChange}
+                      placeholder="https://company-careers-example.com/apply"
+                      className="ev-textarea mono"
+                    ></textarea>
+                  </div>
 
-              <div className="form-group full-width">
-                <label htmlFor="signature">Email Signature (Optional)</label>
-                <textarea
-                  id="signature"
-                  name="signature"
-                  rows={2}
-                  value={formData.signature}
-                  onChange={handleChange}
-                  placeholder="John Smith, HR Manager, ABC Technologies..."
-                  className="ev-textarea"
-                ></textarea>
-              </div>
+                  <div className="form-group full-width">
+                    <label htmlFor="offer_letter_text">Attached Offer Letter Text</label>
+                    <textarea
+                      id="offer_letter_text"
+                      name="offer_letter_text"
+                      rows={3}
+                      value={formData.offer_letter_text}
+                      onChange={handleChange}
+                      placeholder="Paste offer letter text if any..."
+                      className="ev-textarea"
+                    ></textarea>
+                  </div>
+
+                  <div className="form-group full-width">
+                    <label htmlFor="signature">Email Signature</label>
+                    <textarea
+                      id="signature"
+                      name="signature"
+                      rows={2}
+                      value={formData.signature}
+                      onChange={handleChange}
+                      placeholder="Recruiter signature..."
+                      className="ev-textarea"
+                    ></textarea>
+                  </div>
+                </>
+              )}
 
               <div className="form-actions full-width">
                 <button type="submit" className="btn-saas-primary btn-lg" disabled={isLoading}>
                   {isLoading ? (
                     <>
-                      <i className="fa-solid fa-spinner fa-spin"></i> Analyzing email...
+                      <i className="fa-solid fa-spinner fa-spin"></i> Checking email...
                     </>
                   ) : (
                     <>
-                      <i className="fa-solid fa-envelope-circle-check"></i> Verify Email
+                      <i className="fa-solid fa-envelope-circle-check"></i> Check Email
                     </>
                   )}
                 </button>

@@ -82,8 +82,8 @@ export function Complaint() {
         <div className="card-header">
           <div className="header-icon">🚨</div>
           <div>
-            <div className="header-title">Cybersecurity Incident Report</div>
-            <div className="header-sub">Your report is encrypted and secure</div>
+            <div className="header-title">Report a Problem</div>
+            <div className="header-sub">We will keep your info safe</div>
           </div>
         </div>
 
@@ -120,10 +120,10 @@ export function Complaint() {
             </div>
             <div>
               <div style={{ fontWeight: '700', color: '#0f172a', fontSize: '0.95rem' }}>
-                Prefer a natural conversation?
+                Prefer speaking?
               </div>
               <div style={{ fontSize: '0.85rem', color: '#475569' }}>
-                Talk directly with our AI Voice Assistant to file your complaint step-by-step.
+                Talk directly with our Voice Assistant step-by-step.
               </div>
             </div>
           </div>
@@ -140,7 +140,7 @@ export function Complaint() {
               whiteSpace: 'nowrap'
             }}
           >
-            Try Voice Assistant →
+            Try Voice →
           </Link>
         </div>
 
@@ -195,7 +195,7 @@ export function Complaint() {
           </div>
 
           <div className="input-box">
-            <label className="input-label" htmlFor="incident_type">Type of Cyber Incident</label>
+            <label className="input-label" htmlFor="incident_type">What kind of problem?</label>
             <div className="input-inner" style={{ position: 'relative' }}>
               <i className="fas fa-shield-alt input-icon" aria-hidden="true"></i>
               <select
@@ -204,26 +204,26 @@ export function Complaint() {
                 value={incidentType}
                 onChange={(e) => setIncidentType(e.target.value)}
               >
-                <option value="" disabled>Select incident type…</option>
-                <option value="Online Fraud">Online Fraud</option>
-                <option value="Phishing">Phishing</option>
-                <option value="Hacking Attempt">Hacking Attempt</option>
-                <option value="Identity Theft">Identity Theft</option>
-                <option value="Malware / Virus">Malware / Virus</option>
-                <option value="Cyber Bullying">Cyber Bullying</option>
-                <option value="Other">Other</option>
+                <option value="" disabled>Select problem type…</option>
+                <option value="Online Fraud">💸 Online Fraud / Money Lost</option>
+                <option value="Phishing">🎣 Phishing Email / Fake Message</option>
+                <option value="Hacking Attempt">💻 Hacking / Account Stolen</option>
+                <option value="Identity Theft">🆔 Identity Theft</option>
+                <option value="Malware / Virus">🦠 Virus / Phone Hacked</option>
+                <option value="Cyber Bullying">😰 Online Bullying / Harassment</option>
+                <option value="Other">❓ Other Problem</option>
               </select>
               <i className="fas fa-chevron-down select-arrow" aria-hidden="true"></i>
             </div>
           </div>
 
           <div className="input-box">
-            <label className="input-label" htmlFor="description">Incident Description</label>
+            <label className="input-label" htmlFor="description">What happened?</label>
             <div className="input-inner">
               <i className="fas fa-file-alt input-icon" style={{ top: '18px', transform: 'none' }} aria-hidden="true"></i>
               <textarea
                 id="description"
-                placeholder="Describe the incident in detail…"
+                placeholder="Tell us what happened…"
                 required
                 style={{ paddingLeft: '42px' }}
                 value={description}
@@ -233,7 +233,7 @@ export function Complaint() {
           </div>
 
           <div className="input-box">
-            <label className="input-label">Upload Evidence (Screenshots)</label>
+            <label className="input-label">Add Photos / Screenshots</label>
             <div className="file-upload-area" id="dropZone">
               <input
                 type="file"
@@ -243,23 +243,23 @@ export function Complaint() {
                 id="fileInput"
                 onChange={handleFileChange}
               />
-              <div className="file-upload-icon">📎</div>
+              <div className="file-upload-icon">📷</div>
               <div className="file-upload-text">
                 {files.length > 0
-                  ? `${files.length} file${files.length > 1 ? 's' : ''} selected`
-                  : 'Click to upload or drag & drop'}
+                  ? `${files.length} photo${files.length > 1 ? 's' : ''} selected`
+                  : 'Tap to add photos'}
               </div>
-              <div className="file-upload-sub">PNG, JPG, GIF up to 10MB</div>
+              <div className="file-upload-sub">Photos up to 10MB</div>
             </div>
           </div>
 
           <button type="submit" className="btn-submit" disabled={loading}>
-            {loading ? 'Submitting Report…' : 'Report Incident'}
+            {loading ? 'Sending Report…' : 'Send Report'}
           </button>
         </form>
 
         <Link to="/" className="back-link">
-          ← Back to Chat
+          ← Go Back
         </Link>
       </div>
     </div>
