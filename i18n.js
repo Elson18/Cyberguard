@@ -13,7 +13,7 @@ const I18n = (() => {
   // ── Constants ────────────────────────────────────────────────────────────
   const STORAGE_KEY = 'ng_lang';
   const CACHE_KEY   = 'ng_i18n_cache';
-  const API_BASE    = window.location.origin;
+  const API_BASE    = window.CYBERGUARD_API_URL || (window.location.port === '8765' ? window.location.origin : 'http://127.0.0.1:8765');
   const DEFAULT_LANG = 'en';
 
   const LANGUAGE_NAMES = {

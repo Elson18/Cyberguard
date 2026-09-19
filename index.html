@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>CyberGuard — Cyber Support</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/cyberguard/styles.css" />
+  <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="/cyberguard/i18n.js"></script>
+  <script src="config.js"></script>
+  <script src="i18n.js"></script>
   <style>
     /* Tables inside chat bubbles */
     .bubble table {
@@ -326,10 +327,10 @@
     <button class="btn-new" onclick="clearChat()" data-i18n="sidebar_new_session">+ New Session</button>
 
     <nav class="sidebar-nav" aria-label="Main navigation">
-      <a class="sidebar-nav__link is-active" href="/dashboard"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="nav_dashboard">Dashboard</span></a>
-      <a class="sidebar-nav__link" href="/extension"><i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="nav_extension">Download Extension</span></a>
-      <a class="sidebar-nav__link" href="/complaint-form"><i class="fa-solid fa-file-circle-exclamation"></i> <span data-i18n="nav_complaint">File Complaint</span></a>
-      <a class="sidebar-nav__link" href="/agents"><i class="fa-solid fa-gear"></i> <span data-i18n="nav_settings">Settings</span></a>
+      <a class="sidebar-nav__link is-active" href="index.html"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="nav_dashboard">Dashboard</span></a>
+      <a class="sidebar-nav__link" href="extension.html"><i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="nav_extension">Download Extension</span></a>
+      <a class="sidebar-nav__link" href="complaint.html"><i class="fa-solid fa-file-circle-exclamation"></i> <span data-i18n="nav_complaint">File Complaint</span></a>
+      <a class="sidebar-nav__link" href="settings.html"><i class="fa-solid fa-gear"></i> <span data-i18n="nav_settings">Settings</span></a>
     </nav>
 
     <div class="sidebar-panel">
@@ -370,7 +371,7 @@
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
         <div id="ngLangMount"></div>
-        <a href="/extension" class="btn-extension" title="Download CyberGuard Extension">
+        <a href="extension.html" class="btn-extension" title="Download CyberGuard Extension">
           <i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="chat_extension_btn">Extension</span>
         </a>
         <div class="tag" data-i18n="chat_ai_tag">AI Powered</div>
@@ -398,8 +399,9 @@
 </div>
 
 <script>
+  const API_BASE = window.CYBERGUARD_API_URL || (window.location.port === '8765' ? window.location.origin : 'http://127.0.0.1:8765');
   const username = localStorage.getItem("username");
-  if (!username) location.href = "/login";
+  if (!username) location.href = "login.html";
 
   document.getElementById("userName").innerText = username;
   const letter = username ? username[0].toUpperCase() : "U";
@@ -476,7 +478,7 @@
     pane.appendChild(typing);
     pane.scrollTop = pane.scrollHeight;
 
-    const res = await fetch(`${window.location.origin}/query`, {
+    const res = await fetch(`${API_BASE}/query`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query: text, username, language: userLang })
@@ -531,7 +533,7 @@
     saveChat();
   }
 
-  function goToComplaint() { window.location.href = "/complaint-form"; }
+  function goToComplaint() { window.location.href = "complaint.html"; }
 
   loadChat();
 
@@ -540,7 +542,7 @@
     const successMsg = (typeof I18n !== 'undefined') ? I18n.t('chat_success') :
       "✅ Your cyber complaint has been submitted successfully. Our cyber team will contact you shortly.";
     addMessage(successMsg, "bot");
-    history.replaceState(null, "", "/dashboard");
+    history.replaceState(null, "", "index.html");
   }
 
   document.getElementById("sendBtn").onclick = sendMessage;
@@ -551,7 +553,7 @@
     const emptyMsg = (typeof I18n !== 'undefined') ? I18n.t('chat_empty') : 'Start a conversation to get expert cyber support';
     pane.innerHTML = `<div class="empty-state" id="emptyState"><div class="empty-icon">🛡️</div><p>${emptyMsg}</p></div>`;
   }
-  function logout() { localStorage.removeItem("username"); localStorage.removeItem("user_id"); location.href = "/login"; }
+  function logout() { localStorage.removeItem("username"); localStorage.removeItem("user_id"); location.href = "login.html"; }
 </script>
 </body>
 </html>

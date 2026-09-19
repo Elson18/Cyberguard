@@ -11,7 +11,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="config.js"></script>
     <style>
       .ext-hero {
         text-align: center;
@@ -141,8 +142,8 @@
           <button type="button" class="btn btn--ghost btn--icon js-sidebar-close" style="margin-left: auto" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <nav class="sidebar__nav">
-          <a class="is-active" href="/extension"><i class="fa-solid fa-puzzle-piece"></i> Download Extension</a>
-          <a href="/dashboard"><i class="fa-solid fa-arrow-left"></i> Back to CyberGuard</a>
+          <a class="is-active" href="extension.html"><i class="fa-solid fa-puzzle-piece"></i> Download Extension</a>
+          <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to CyberGuard</a>
         </nav>
         <div class="sidebar__footer">
           <button class="btn btn--ghost btn--ripple" type="button" id="logout" style="width: 100%"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out</button>
@@ -274,10 +275,13 @@
       </main>
     </div>
 
-    <script src="/static/js/core.js"></script>
-    <script src="/static/js/ui.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/ui.js"></script>
     <script>
       (function () {
+        const API_BASE = window.CYBERGUARD_API_URL || 'http://127.0.0.1:8765';
+        const dlBtn = document.getElementById("downloadBtn");
+        if (dlBtn) dlBtn.href = `${API_BASE}/api/extension/download`;
         AAP.requireAuth();
         document.getElementById("logout").addEventListener("click", function () {
           AAP.logout();

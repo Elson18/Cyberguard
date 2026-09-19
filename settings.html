@@ -8,10 +8,11 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="/cyberguard/styles.css" />
+  <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     crossorigin="anonymous" />
-  <script src="/cyberguard/i18n.js"></script>
+  <script src="config.js"></script>
+  <script src="i18n.js"></script>
 </head>
 
 <body class="page-dashboard page-settings">
@@ -39,10 +40,10 @@
       </div>
 
       <nav class="sidebar-nav" aria-label="Main navigation">
-        <a class="sidebar-nav__link" href="/dashboard"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="nav_dashboard">Dashboard</span></a>
-        <a class="sidebar-nav__link" href="/extension"><i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="nav_extension">Download Extension</span></a>
-        <a class="sidebar-nav__link" href="/complaint-form"><i class="fa-solid fa-file-circle-exclamation"></i> <span data-i18n="nav_complaint">File Complaint</span></a>
-        <a class="sidebar-nav__link is-active" href="/agents"><i class="fa-solid fa-gear"></i> <span data-i18n="nav_settings">Settings</span></a>
+        <a class="sidebar-nav__link" href="index.html"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="nav_dashboard">Dashboard</span></a>
+        <a class="sidebar-nav__link" href="extension.html"><i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="nav_extension">Download Extension</span></a>
+        <a class="sidebar-nav__link" href="complaint.html"><i class="fa-solid fa-file-circle-exclamation"></i> <span data-i18n="nav_complaint">File Complaint</span></a>
+        <a class="sidebar-nav__link is-active" href="settings.html"><i class="fa-solid fa-gear"></i> <span data-i18n="nav_settings">Settings</span></a>
       </nav>
 
       <div class="sidebar-panel">
@@ -415,7 +416,8 @@
           setTimeout(function(){ status.style.display = 'none'; }, 2500);
         }
         var uid = localStorage.getItem('user_id');
-        if (uid) fetch('/api/user/language', {
+        var apiBase = window.CYBERGUARD_API_URL || 'http://127.0.0.1:8765';
+        if (uid) fetch(apiBase + '/api/user/language', {
           method: 'POST',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify({user_id: uid, language: chosen})

@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EchoVision — Create Account</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/cyberguard/styles.css" />
+<link rel="stylesheet" href="styles.css" />
+<script src="config.js"></script>
 </head>
 <body class="page-auth">
 
@@ -70,11 +71,12 @@
   <button class="btn-signup" onclick="register()">Create Account →</button>
 
   <div class="card-footer">
-    <a href="/login">Already have an account? <span>Login →</span></a>
+    <a href="login.html">Already have an account? <span>Login →</span></a>
   </div>
 </div>
 
 <script>
+const API_BASE = window.CYBERGUARD_API_URL || (window.location.port === '8765' ? window.location.origin : 'http://127.0.0.1:8765');
 function showAlert(msg, type = "error") {
   const el = document.getElementById("alertBox");
   el.textContent = msg;
@@ -94,7 +96,7 @@ async function register() {
   }
 
   try {
-    const res = await fetch(`${window.location.origin}/register`, {
+    const res = await fetch(`${API_BASE}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, phone_no, password, re_password })
@@ -104,7 +106,7 @@ async function register() {
 
     if (res.status === 200 || res.status === 201) {
       showAlert("Registration successful! Redirecting…", "success");
-      setTimeout(() => window.location.href = "/dashboard", 1500);
+      setTimeout(() => window.location.href = "index.html", 1500);
     } else {
       showAlert(data.detail || "Registration failed");
     }
