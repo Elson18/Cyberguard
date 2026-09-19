@@ -8,7 +8,7 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
   const { t } = useI18n();
   const navigate = useNavigate();
 
-  const avatarLetter = username ? username[0].toUpperCase() : 'U';
+  const avatarLetter = username ? username[0].toUpperCase() : 'E';
 
   const handleLogout = () => {
     logout();
@@ -21,13 +21,13 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
         <div className="logo-icon">CG</div>
         <div className="logo-text">
           <strong>CyberGuard</strong>
-          <span>Multilingual CyberCrime Support<br />RAG + Agentic AI</span>
+          <span>AI-powered cyber protection</span>
         </div>
       </div>
 
       <div className="status-bar">
-        <div className="status-dot"></div>
-        <span className="status-text">{t('sidebar_status', 'SYSTEM ACTIVE')}</span>
+        <span className="status-dot"></span>
+        <span className="status-text">Protection active</span>
       </div>
 
       {onNewSession && (
@@ -42,7 +42,7 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
           className={({ isActive }) => `sidebar-nav__link ${isActive && activePage === 'dashboard' ? 'is-active' : ''}`}
         >
           <i className="fa-solid fa-gauge-high"></i>
-          <span>{t('nav_dashboard', 'Dashboard')}</span>
+          <span>{t('nav_dashboard', 'Overview')}</span>
         </NavLink>
 
         <NavLink
@@ -50,7 +50,7 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
           className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
         >
           <i className="fa-solid fa-puzzle-piece"></i>
-          <span>{t('nav_extension', 'Download Extension')}</span>
+          <span>{t('nav_extension_short', 'Extension')}</span>
         </NavLink>
 
         <NavLink
@@ -73,16 +73,16 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
       <div className="sidebar-panel">
         <div className="sidebar-panel-title">{t('sidebar_system_status', 'System Status')}</div>
         <div className="sidebar-stat">
-          <span>{t('sidebar_rag', 'RAG Engine')}</span>
-          <span className="online">{t('sidebar_online', '● Online')}</span>
+          <span>RAG Engine</span>
+          <span className="online">● Online</span>
         </div>
         <div className="sidebar-stat">
-          <span>{t('sidebar_ai', 'AI Model')}</span>
-          <span className="online">{t('sidebar_active', '● Active')}</span>
+          <span>AI Model</span>
+          <span className="online">● Active</span>
         </div>
         <div className="sidebar-stat">
-          <span>{t('sidebar_threatdb', 'Threat DB')}</span>
-          <span className="online">{t('sidebar_synced', '● Synced')}</span>
+          <span>Threat DB</span>
+          <span className="online">● Synced</span>
         </div>
       </div>
 
@@ -91,12 +91,12 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
           <div className="user-info">
             <div className="user-avatar">{avatarLetter}</div>
             <div>
-              <div className="user-name">{username || '—'}</div>
+              <div className="user-name">{username || 'Elson'}</div>
               <div className="user-label">● Active</div>
             </div>
           </div>
-          <button className="btn-logout" onClick={handleLogout} type="button">
-            {t('btn_exit', 'Exit')}
+          <button className="btn-logout" onClick={handleLogout} type="button" title="Sign Out">
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
           </button>
         </div>
       </div>
