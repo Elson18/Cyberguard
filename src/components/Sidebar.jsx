@@ -54,6 +54,22 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
         </NavLink>
 
         <NavLink
+          to="/email-verification"
+          className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
+        >
+          <i className="fa-solid fa-envelope-circle-check"></i>
+          <span>{t('nav_email_verification', 'Email Verification')}</span>
+        </NavLink>
+
+        <NavLink
+          to="/voice-complaint"
+          className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
+        >
+          <i className="fa-solid fa-microphone"></i>
+          <span>AI Voice Assistant</span>
+        </NavLink>
+
+        <NavLink
           to="/complaint"
           className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
         >

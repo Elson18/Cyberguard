@@ -134,6 +134,10 @@ export function Dashboard() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <LanguageSelector />
+            <Link to="/email-verification" className="btn-extension" style={{ background: 'linear-gradient(135deg, #2563eb, #3b82f6)' }} title="Verify Job Offer Email">
+              <i className="fa-solid fa-envelope-circle-check"></i>
+              <span>Verify Email</span>
+            </Link>
             <Link to="/extension" className="btn-extension" title="Download CyberGuard Extension">
               <i className="fa-solid fa-puzzle-piece"></i>
               <span>{t('chat_extension_btn', 'Extension')}</span>
@@ -147,6 +151,11 @@ export function Dashboard() {
             <div className="empty-state">
               <div className="empty-icon">🛡️</div>
               <p>{t('chat_empty', 'Start a conversation to get expert cyber support')}</p>
+              <div style={{ marginTop: '16px', display: 'flex', gap: '12px' }}>
+                <Link to="/email-verification" className="btn-saas-secondary btn-sm" style={{ textDecoration: 'none' }}>
+                  <i className="fa-solid fa-envelope-circle-check" style={{ color: '#2563eb' }}></i> Verify Job Offer Email
+                </Link>
+              </div>
             </div>
           ) : (
             messages.map((msg) => (

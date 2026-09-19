@@ -87,6 +87,63 @@ export function Complaint() {
           </div>
         </div>
 
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(6,182,212,0.08) 100%)',
+            border: '1px solid rgba(37,99,235,0.2)',
+            borderRadius: '16px',
+            padding: '1.1rem 1.4rem',
+            margin: '1.25rem 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            flexWrap: 'wrap'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #2563eb, #06b6d4)',
+                color: '#fff',
+                fontSize: '1.2rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}
+            >
+              🎙️
+            </div>
+            <div>
+              <div style={{ fontWeight: '700', color: '#0f172a', fontSize: '0.95rem' }}>
+                Prefer a natural conversation?
+              </div>
+              <div style={{ fontSize: '0.85rem', color: '#475569' }}>
+                Talk directly with our AI Voice Assistant to file your complaint step-by-step.
+              </div>
+            </div>
+          </div>
+          <Link
+            to="/voice-complaint"
+            style={{
+              background: '#2563eb',
+              color: '#ffffff',
+              padding: '0.55rem 1.1rem',
+              borderRadius: '10px',
+              fontWeight: '600',
+              textDecoration: 'none',
+              fontSize: '0.88rem',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            Try Voice Assistant →
+          </Link>
+        </div>
+
         {alertInfo.msg && (
           <div className={`alert ${alertInfo.type} show`}>{alertInfo.msg}</div>
         )}

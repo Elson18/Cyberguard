@@ -30,6 +30,16 @@ export async function sendQuery(queryText, username, language = 'en') {
   return { ok: response.ok, status: response.status, data };
 }
 
+export async function verifyEmail(emailVerificationData) {
+  const response = await fetch(`${API_BASE}/api/email/verify`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(emailVerificationData),
+  });
+  const data = await response.json().catch(() => ({}));
+  return { ok: response.ok, status: response.status, data };
+}
+
 export async function submitIncidentReport(formData) {
   const response = await fetch(`${API_BASE}/report`, {
     method: 'POST',

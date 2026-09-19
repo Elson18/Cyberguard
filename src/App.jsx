@@ -9,7 +9,9 @@ import { Login } from './pages/Login';
 import { Signin } from './pages/Signin';
 import { Complaint } from './pages/Complaint';
 import { ExtensionDownload } from './pages/ExtensionDownload';
+import { EmailVerification } from './pages/EmailVerification';
 import { Settings } from './pages/Settings';
+import { VoiceComplaint } from './pages/VoiceComplaint';
 
 export default function App() {
   return (
@@ -28,6 +30,22 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signin" element={<Signin />} />
             <Route
+              path="/voice-complaint"
+              element={
+                <ProtectedRoute>
+                  <VoiceComplaint />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/voice"
+              element={
+                <ProtectedRoute>
+                  <VoiceComplaint />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/complaint"
               element={
                 <ProtectedRoute>
@@ -40,6 +58,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <ExtensionDownload />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/email-verification"
+              element={
+                <ProtectedRoute>
+                  <EmailVerification />
                 </ProtectedRoute>
               }
             />
