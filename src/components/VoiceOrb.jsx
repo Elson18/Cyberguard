@@ -1,13 +1,11 @@
 import React from 'react';
 import './VoiceOrb.css';
 
-export function VoiceOrb({ state = 'idle', currentQuestion = '', transcript = '' }) {
-  // state can be: 'idle', 'speaking', 'listening', 'processing'
-
+export function VoiceOrb({ state = 'idle', currentQuestion = '', transcript = '', language = 'English', languageCode = 'en' }) {
   const getStateLabel = () => {
     switch (state) {
       case 'speaking':
-        return 'AI is speaking...';
+        return 'CyberGuard is speaking...';
       case 'listening':
         return 'Listening...';
       case 'processing':
@@ -32,10 +30,17 @@ export function VoiceOrb({ state = 'idle', currentQuestion = '', transcript = ''
 
   return (
     <div className={`voice-orb-container voice-orb--${state}`}>
-      {/* Dynamic Status Badge */}
-      <div className="voice-status-badge">
-        <i className={`fas ${getStateIcon()} status-icon`} aria-hidden="true" />
-        <span className="status-text">{getStateLabel()}</span>
+      {/* Top Badges: Status + Language Indicator */}
+      <div className="voice-badges-row">
+        <div className="voice-status-badge">
+          <i className={`fas ${getStateIcon()} status-icon`} aria-hidden="true" />
+          <span className="status-text">{getStateLabel()}</span>
+        </div>
+
+        <div className="voice-lang-badge">
+          <i className="fas fa-globe lang-icon" aria-hidden="true" />
+          <span>Language: <strong>{language}</strong></span>
+        </div>
       </div>
 
       {/* Main Animated Orb Visualizer */}

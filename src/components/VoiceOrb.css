@@ -8,6 +8,15 @@
   width: 100%;
 }
 
+.voice-badges-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
 .voice-status-badge {
   display: inline-flex;
   align-items: center;
@@ -20,8 +29,20 @@
   font-size: 0.92rem;
   font-weight: 600;
   color: var(--text, #0f172a);
-  margin-bottom: 2.2rem;
   transition: all 0.3s ease;
+}
+
+.voice-lang-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 9999px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: #2563eb;
+  font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .voice-orb--speaking .voice-status-badge {
@@ -42,7 +63,7 @@
   color: #6d28d9;
 }
 
-.status-icon {
+.status-icon, .lang-icon {
   font-size: 0.9rem;
 }
 
@@ -162,7 +183,6 @@
   justify-content: center;
 }
 
-/* Equalizer / sound wave animation */
 .sound-wave-bars {
   display: flex;
   align-items: center;
