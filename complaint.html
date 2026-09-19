@@ -6,7 +6,7 @@
   <title>EchoVision — File Incident Report</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/cyberguard/styles.css" />
 </head>
 <body class="page-auth">
 
@@ -98,7 +98,7 @@
 
 <script>
   const username = localStorage.getItem("username");
-  if (!username) location.href = "login.html";
+  if (!username) location.href = "/login";
 
   document.getElementById("fileInput").addEventListener("change", function() {
     const count = this.files.length;
@@ -119,7 +119,7 @@
     const formData = new FormData(e.target);
 
     try {
-      const res = await fetch("https://cyberguard-api-zxry.onrender.com/report", {
+      const res = await fetch(`${window.location.origin}/report`, {
         method: "POST",
         body: formData
       });
@@ -130,7 +130,7 @@
       }
 
       showAlert("Incident reported successfully. Cyber team has been notified.", "success");
-      setTimeout(() => window.location.href = "index.html?from=complaint", 1800);
+      setTimeout(() => window.location.href = "/dashboard?from=complaint", 1800);
 
     } catch (err) {
       showAlert("Server error. Please try again later.");

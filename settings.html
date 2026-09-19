@@ -1,773 +1,538 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>CyberGuard AI | Settings</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Font & Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --bg-body: #0B1120;
-      --bg-panel: rgba(17, 24, 39, 0.9);
-      --bg-card: rgba(15, 23, 42, 0.95);
-      --primary: #8B5CF6;
-      --secondary: #3B82F6;
-      --accent-success: #10B981;
-      --accent-danger: #EF4444;
-      --text-main: #F9FAFB;
-      --text-muted: #9CA3AF;
-      --border-subtle: #1F2937;
-      --radius-xl: 18px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      background-color: var(--bg-body);
-      background-image:
-        radial-gradient(circle at 5% 0%, rgba(139, 92, 246, 0.25), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.25), transparent 55%);
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .app-shell {
-      width: 100%;
-      max-width: 1200px;
-      min-height: 620px;
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.98));
-      border-radius: 24px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: 0 26px 80px rgba(15, 23, 42, 0.95);
-      display: grid;
-      grid-template-columns: 260px minmax(0, 1fr);
-      overflow: hidden;
-      position: relative;
-    }
-
-    @media (max-width: 900px) {
-      .app-shell {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .sidebar {
-        display: none;
-      }
-    }
-
-    .header-glow {
-      position: absolute;
-      inset-inline: 0;
-      top: 0;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(56, 189, 248, 0.3), rgba(139, 92, 246, 0.9), rgba(56, 189, 248, 0.3));
-      pointer-events: none;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      background: rgba(15, 23, 42, 0.98);
-      border-right: 1px solid var(--border-subtle);
-      padding: 20px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .sidebar-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .brand-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
-      background: conic-gradient(from 180deg, var(--primary), var(--secondary), #22d3ee, var(--primary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #0B1120;
-      font-size: 18px;
-      font-weight: 800;
-      box-shadow: 0 0 26px rgba(56, 189, 248, 0.7);
-    }
-
-    .brand-text {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-    }
-
-    .brand-text span {
-      color: var(--primary);
-    }
-
-    .sidebar-section-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-top: 4px;
-      margin-bottom: 6px;
-    }
-
-    .nav-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size: 13px;
-      color: var(--text-muted);
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
-    }
-
-    .nav-item i {
-      width: 16px;
-      text-align: center;
-      font-size: 12px;
-    }
-
-    .nav-item:hover {
-      background: rgba(15, 23, 42, 0.95);
-      border-color: rgba(55, 65, 81, 0.9);
-      color: #E5E7EB;
-      transform: translateY(-1px);
-    }
-
-    .nav-item.active {
-      background: linear-gradient(120deg, rgba(139, 92, 246, 0.22), rgba(59, 130, 246, 0.16));
-      border-color: rgba(129, 140, 248, 0.85);
-      color: #F9FAFB;
-      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.45);
-    }
-
-    .nav-item.active i {
-      color: var(--primary);
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .secure-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: #022c22;
-      color: #6ee7b7;
-      border: 1px solid rgba(45, 212, 191, 0.6);
-    }
-
-    .secure-pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
-    }
-
-    /* Main */
-    .main {
-      padding: 20px 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .main-header {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .main-title {
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .main-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 3px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-size: 11px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .badge i {
-      color: var(--secondary);
-    }
-
-    /* Grid layout */
-    .settings-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
-      gap: 16px;
-      margin-top: 6px;
-    }
-
-    @media (max-width: 900px) {
-      .settings-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      background: var(--bg-card);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border-subtle);
-      padding: 16px 18px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease, background 0.18s ease;
-    }
-
-    .card:hover {
-      border-color: rgba(129, 140, 248, 0.8);
-      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.98);
-      transform: translateY(-2px);
-      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.25), transparent 70%), var(--bg-card);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .card-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    /* Profile card */
-    .profile-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .profile-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 16px;
-      background: radial-gradient(circle at 30% 0, var(--secondary), var(--primary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: 700;
-      color: #0f172a;
-      box-shadow: 0 16px 40px rgba(59, 130, 246, 0.7);
-    }
-
-    .profile-text-main {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .profile-text-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .role-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 10px;
-      border: 1px solid rgba(59, 130, 246, 0.6);
-      color: #bfdbfe;
-      background: rgba(15, 23, 42, 0.9);
-      margin-top: 3px;
-    }
-
-    /* Toggles */
-    .toggle-list {
-      margin-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: 12px;
-    }
-
-    .toggle-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .toggle-label {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .toggle-label span:first-child {
-      font-weight: 500;
-    }
-
-    .toggle-label span:last-child {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .switch {
-      position: relative;
-      width: 42px;
-      height: 22px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background: #1f2937;
-      border-radius: 999px;
-      transition: background 0.2s ease;
-      border: 1px solid rgba(75, 85, 99, 0.9);
-    }
-
-    .slider::before {
-      position: absolute;
-      content: "";
-      height: 16px;
-      width: 16px;
-      left: 3px;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: #e5e7eb;
-      border-radius: 50%;
-      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.0);
-    }
-
-    .switch input:checked + .slider {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-color: transparent;
-    }
-
-    .switch input:checked + .slider::before {
-      transform: translate(17px, -50%);
-      background-color: #0f172a;
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.4);
-    }
-
-    /* Theme selector */
-    .theme-options {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      font-size: 11px;
-      flex-wrap: wrap;
-    }
-
-    .theme-chip {
-      flex: 1 1 80px;
-      min-width: 80px;
-      padding: 7px 9px;
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15, 23, 42, 0.9);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, transform 0.12s ease;
-    }
-
-    .theme-chip i {
-      font-size: 11px;
-    }
-
-    .theme-chip.active {
-      border-color: rgba(129, 140, 248, 0.9);
-      color: #e5e7eb;
-      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.4), transparent 70%);
-      box-shadow: 0 12px 30px rgba(55, 65, 81, 0.9);
-      transform: translateY(-1px);
-    }
-
-    .theme-chip:hover {
-      border-color: rgba(148, 163, 184, 0.8);
-      color: #e5e7eb;
-    }
-
-    /* Password form */
-    .password-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    @media (min-width: 640px) {
-      .password-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    .field-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 3px;
-    }
-
-    .field-input {
-      width: 100%;
-      border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 12px;
-      color: var(--text-main);
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      outline: none;
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-    }
-
-    .field-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.9), 0 0 0 6px rgba(56, 189, 248, 0.15);
-      background: #020617;
-    }
-
-    .card-footer {
-      margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-    }
-
-    .btn {
-      border: none;
-      outline: none;
-      cursor: pointer;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 8px 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: #f9fafb;
-      box-shadow: 0 16px 35px rgba(79, 70, 229, 0.7);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 20px 48px rgba(79, 70, 229, 0.9);
-    }
-
-    .btn-ghost {
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-muted);
-      border: 1px solid var(--border-subtle);
-    }
-
-    .btn-ghost:hover {
-      color: #f9fafb;
-      border-color: rgba(148, 163, 184, 0.9);
-      background: rgba(15, 23, 42, 1);
-      transform: translateY(-1px);
-    }
-
-    .hint {
-      margin-top: 8px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .hint i {
-      color: var(--secondary);
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CyberGuard — Settings</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/cyberguard/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous" />
+  <script src="/cyberguard/i18n.js"></script>
 </head>
-<body>
-  <div class="app-shell">
-    <div class="header-glow"></div>
 
-    <!-- Sidebar -->
+<body class="page-dashboard page-settings">
+
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-blob bg-blob--blue"></div>
+    <div class="bg-blob bg-blob--cyan"></div>
+    <div class="bg-blob bg-blob--emerald"></div>
+  </div>
+
+  <div class="app">
     <aside class="sidebar">
-      <div class="sidebar-brand">
-        <div class="brand-icon">
-          <i class="fas fa-shield-alt"></i>
-        </div>
-        <div>
-          <div class="brand-text">CYBERGUARD <span>AI</span></div>
-          <div class="sidebar-section-label">Control Center</div>
+      <div class="logo-wrap">
+        <div class="logo-icon">CG</div>
+        <div class="logo-text">
+          <strong>CyberGuard</strong>
+          <span>Multilingual CyberCrime Support<br>RAG + Agentic AI</span>
         </div>
       </div>
 
-      <ul class="nav-list">
-        <li class="nav-item">
-          <i class="fas fa-comment-alt"></i>
-          <span>Live Intel Chat</span>
-        </li>
-        <li class="nav-item">
-          <i class="fas fa-bug"></i>
-          <span>Threat Reports</span>
-        </li>
-        <li class="nav-item">
-          <i class="fas fa-network-wired"></i>
-          <span>Network Logs</span>
-        </li>
-        <li class="nav-item active">
-          <i class="fas fa-sliders-h"></i>
-          <span>Settings</span>
-        </li>
-      </ul>
+      <div class="status-bar">
+        <div class="status-dot"></div>
+        <span class="status-text">SYSTEM ACTIVE</span>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <a class="sidebar-nav__link" href="/dashboard"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="nav_dashboard">Dashboard</span></a>
+        <a class="sidebar-nav__link" href="/extension"><i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="nav_extension">Download Extension</span></a>
+        <a class="sidebar-nav__link" href="/complaint-form"><i class="fa-solid fa-file-circle-exclamation"></i> <span data-i18n="nav_complaint">File Complaint</span></a>
+        <a class="sidebar-nav__link is-active" href="/agents"><i class="fa-solid fa-gear"></i> <span data-i18n="nav_settings">Settings</span></a>
+      </nav>
+
+      <div class="sidebar-panel">
+        <div class="sidebar-panel-title">System Status</div>
+        <div class="sidebar-stat">
+          <span>RAG Engine</span>
+          <span class="online">● Online</span>
+        </div>
+        <div class="sidebar-stat">
+          <span>AI Model</span>
+          <span class="online">● Active</span>
+        </div>
+        <div class="sidebar-stat">
+          <span>Threat DB</span>
+          <span class="online">● Synced</span>
+        </div>
+      </div>
 
       <div class="sidebar-footer">
-        <div class="secure-pill">
-          <span class="secure-pill-dot"></span>
-          <span>Secure session</span>
+        <div class="user-row">
+          <div class="user-info">
+            <div class="user-avatar" id="userAvatarLetter">U</div>
+            <div>
+              <div class="user-name" id="userName">—</div>
+              <div class="user-label">● Active</div>
+            </div>
+          </div>
+          <button class="btn-logout" type="button" onclick="logout()">Exit</button>
         </div>
-        <span>v1.0</span>
       </div>
     </aside>
 
-    <!-- Main content -->
     <main class="main">
       <div class="main-header">
         <div>
-          <div class="main-title">Security Settings</div>
-          <div class="main-subtitle">
-            Manage your CyberGuard AI profile, notifications and security preferences.
-          </div>
+          <div class="main-title" data-i18n="settings_title">Security Settings</div>
+          <div class="main-subtitle" data-i18n="settings_subtitle">Manage your profile, notifications, and security preferences.</div>
         </div>
-        <div class="badge">
-          <i class="fas fa-lock"></i>
-          <span>Changes affect this account only</span>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div id="ngLangMount"></div>
+          <div class="tag" data-i18n="nav_settings">Account</div>
         </div>
       </div>
 
-      <div class="settings-grid">
-        <!-- Left column -->
-        <div class="settings-col">
-          <!-- Profile card -->
-          <section class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title">User Profile</div>
-                <div class="card-subtitle">Account identity and access level.</div>
-              </div>
-            </div>
-            <div class="profile-row">
-              <div class="profile-avatar">
-                <span>U</span>
-              </div>
-              <div>
-                <div class="profile-text-main">analyst.user@cyberguard.ai</div>
-                <div class="profile-text-sub">Primary account • Linked to incident workspace</div>
-                <div class="role-pill">
-                  <i class="fas fa-user-shield"></i>
-                  <span>Security Analyst • L1</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Notification toggles -->
-          <section class="card" style="margin-top: 12px;">
-            <div class="card-header">
-              <div>
-                <div class="card-title">Alerts & Notifications</div>
-                <div class="card-subtitle">Configure how CyberGuard AI notifies you.</div>
-              </div>
-            </div>
-            <div class="toggle-list">
-              <div class="toggle-item">
-                <div class="toggle-label">
-                  <span>System notifications</span>
-                  <span>Show in-app alerts for new threats and anomalies.</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" checked />
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="toggle-item">
-                <div class="toggle-label">
-                  <span>Email alerts</span>
-                  <span>Send summarized incident reports to your inbox.</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" />
-                  <span class="slider"></span>
-                </label>
-              </div>
-              <div class="toggle-item">
-                <div class="toggle-label">
-                  <span>Real-time threat monitoring</span>
-                  <span>Allow continuous analysis of connected sources.</span>
-                </div>
-                <label class="switch">
-                  <input type="checkbox" checked />
-                  <span class="slider"></span>
-                </label>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <!-- Right column -->
-        <div class="settings-col">
-          <!-- Theme selector -->
-          <section class="card">
-            <div class="card-header">
-              <div>
-                <div class="card-title">Appearance</div>
-                <div class="card-subtitle">Adjust theme for your workspace.</div>
-              </div>
-            </div>
-            <div class="theme-options">
-              <button type="button" class="theme-chip">
-                <i class="far fa-sun"></i>
-                <span>Light</span>
-              </button>
-              <button type="button" class="theme-chip active">
-                <i class="fas fa-moon"></i>
-                <span>Dark</span>
-              </button>
-              <button type="button" class="theme-chip">
-                <i class="fas fa-adjust"></i>
-                <span>Auto</span>
-              </button>
-            </div>
-            <p className="hint">
-              <span class="hint">
-                <i class="fas fa-info-circle"></i>
-                &nbsp;Auto adapts to your system preference and time of day.
-              </span>
-            </p>
-          </section>
-
-          <!-- Password change -->
-          <section class="card" style="margin-top: 12px;">
-            <div class="card-header">
-              <div>
-                <div class="card-title">Change Password</div>
-                <div class="card-subtitle">
-                  Use a strong, unique password to secure your CyberGuard AI access.
-                </div>
-              </div>
-            </div>
-            <form>
-              <div class="password-grid">
+      <div class="settings-scroll">
+        <div class="settings-grid">
+          <div>
+            <section class="settings-card">
+              <div class="settings-card__title">User Profile</div>
+              <div class="settings-card__sub">Account identity and access level.</div>
+              <div class="settings-profile">
+                <div class="settings-profile__avatar" id="profileAvatar">U</div>
                 <div>
-                  <label class="field-label" for="current_password">Current password</label>
-                  <input
-                    id="current_password"
-                    type="password"
-                    class="field-input"
-                    placeholder="••••••••"
-                  />
-                </div>
-                <div>
-                  <label class="field-label" for="new_password">New password</label>
-                  <input
-                    id="new_password"
-                    type="password"
-                    class="field-input"
-                    placeholder="Min. 8 characters"
-                  />
-                </div>
-                <div>
-                  <label class="field-label" for="confirm_password">Confirm password</label>
-                  <input
-                    id="confirm_password"
-                    type="password"
-                    class="field-input"
-                    placeholder="Repeat new password"
-                  />
+                  <div class="settings-profile__name" id="profileEmail">—</div>
+                  <div class="settings-profile__meta">Primary account · Linked to incident workspace</div>
+                  <div class="settings-role">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>CyberGuard User</span>
+                  </div>
                 </div>
               </div>
-              <p class="hint">
-                <i class="fas fa-shield-alt"></i>
-                &nbsp;Use at least 1 number, 1 symbol, and 1 uppercase letter.
+            </section>
+
+            <section class="settings-card">
+              <div class="settings-card__title">Alerts & Notifications</div>
+              <div class="settings-card__sub">Configure how CyberGuard notifies you.</div>
+              <div class="settings-toggle-list">
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>System notifications</strong>
+                    <span>In-app alerts for new threats and anomalies.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" checked />
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Email alerts</strong>
+                    <span>Summarized incident reports to your inbox.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" />
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Real-time threat monitoring</strong>
+                    <span>Continuous analysis via NeuroGuard extension.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" checked />
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div>
+            <section class="settings-card" id="languageSection">
+              <div class="settings-card__title" data-i18n="settings_language_title">Language &amp; Region</div>
+              <div class="settings-card__sub" data-i18n="settings_language_sub">Choose your preferred language for the interface and AI responses.</div>
+
+              <div class="settings-fields">
+                <div class="settings-field">
+                  <label data-i18n="settings_language_current">Current Language</label>
+                  <div id="currentLangDisplay" style="font-weight:700;font-size:0.9rem;color:#3b82f6;padding:8px 0;">English</div>
+                </div>
+                <div class="settings-field">
+                  <label for="languageSelect" data-i18n="settings_language_select">Select Language</label>
+                  <select id="languageSelect" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:#0f172a;color:#e2e8f0;font-size:0.88rem;font-family:inherit;">
+                    <optgroup label="🇮🇳 Indian Languages">
+                      <option value="en">English</option>
+                      <option value="ta">தமிழ் (Tamil)</option>
+                      <option value="hi">हिन्दी (Hindi)</option>
+                      <option value="te">తెలుగు (Telugu)</option>
+                      <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                      <option value="ml">മലയാളം (Malayalam)</option>
+                      <option value="bn">বাংলা (Bengali)</option>
+                      <option value="mr">मराठी (Marathi)</option>
+                      <option value="gu">ગુજરાતી (Gujarati)</option>
+                      <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                      <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                    </optgroup>
+                    <optgroup label="🌐 International">
+                      <option value="es">Español (Spanish)</option>
+                      <option value="fr">Français (French)</option>
+                      <option value="de">Deutsch (German)</option>
+                      <option value="pt">Português (Portuguese)</option>
+                      <option value="ar">العربية (Arabic)</option>
+                      <option value="ja">日本語 (Japanese)</option>
+                      <option value="ko">한국어 (Korean)</option>
+                      <option value="zh">中文 (Chinese)</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <div class="settings-actions" style="margin-top:16px;">
+                <button type="button" class="btn-settings btn-settings--primary" id="saveLangBtn">
+                  <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="settings_language_save">Save Preference</span>
+                </button>
+                <span id="langSaveStatus" style="font-size:0.8rem;color:#34d399;display:none;margin-left:12px;">
+                  <i class="fa-solid fa-check"></i> <span data-i18n="settings_language_saved">Language preference saved!</span>
+                </span>
+              </div>
+            </section>
+
+            <section class="settings-card">
+              <div class="settings-card__title" data-i18n="settings_appearance_title">Appearance</div>
+              <div class="settings-card__sub" data-i18n="settings_appearance_sub">Adjust theme for your workspace.</div>
+              <div class="settings-theme-chips">
+                <button type="button" class="settings-theme-chip is-active" data-theme="light">
+                  <i class="fa-regular fa-sun"></i> Light
+                </button>
+                <button type="button" class="settings-theme-chip" data-theme="dark">
+                  <i class="fa-solid fa-moon"></i> Dark
+                </button>
+                <button type="button" class="settings-theme-chip" data-theme="auto">
+                  <i class="fa-solid fa-circle-half-stroke"></i> Auto
+                </button>
+              </div>
+              <p class="settings-hint">
+                <i class="fa-solid fa-circle-info"></i>
+                Light theme matches the CyberGuard dashboard (recommended).
               </p>
-              <div class="card-footer">
-                <button type="button" class="btn btn-ghost">
-                  <i class="fas fa-rotate-left"></i>
-                  Reset
-                </button>
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-save"></i>
-                  Save changes
+            </section>
+
+            <section class="settings-card">
+              <div class="settings-card__title">Change Password</div>
+              <div class="settings-card__sub">Use a strong, unique password to secure your access.</div>
+
+              <form id="passwordForm">
+                <div class="settings-fields">
+                  <div class="settings-field">
+                    <label for="current_password">Current password</label>
+                    <input id="current_password" type="password" placeholder="••••••••"
+                      autocomplete="current-password" />
+                  </div>
+                  <div class="settings-field">
+                    <label for="new_password">New password</label>
+                    <input id="new_password" type="password" placeholder="Min. 8 characters"
+                      autocomplete="new-password" />
+                  </div>
+                  <div class="settings-field">
+                    <label for="confirm_password">Confirm password</label>
+                    <input id="confirm_password" type="password" placeholder="Repeat new password"
+                      autocomplete="new-password" />
+                  </div>
+                </div>
+                <p class="settings-hint">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  Use at least 1 number, 1 symbol, and 1 uppercase letter.
+                </p>
+                <div class="settings-actions">
+                  <button type="button" class="btn-settings btn-settings--ghost" id="resetBtn">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                  </button>
+                  <button type="submit" class="btn-settings btn-settings--primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Save changes
+                  </button>
+                </div>
+              </form>
+            </section>
+            <!-- Security Settings -->
+            <section class="settings-card">
+              <div class="settings-card__title">Security Settings</div>
+              <div class="settings-card__sub">
+                Manage authentication, devices, and account security.
+              </div>
+
+              <!-- Toggles -->
+              <div class="settings-toggle-list">
+
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Two-Factor Authentication (2FA)</strong>
+                    <span>Require OTP verification during login.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" id="twoFactorToggle">
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Biometric Authentication</strong>
+                    <span>Use fingerprint or face authentication.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" id="biometricToggle">
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+
+              </div>
+
+              <!-- Login Activity -->
+              <div class="security-section">
+                <h4><i class="fa-solid fa-clock-rotate-left"></i> Login Activity History</h4>
+
+                <table class="security-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Device</th>
+                      <th>Location</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>02 Jun 2026, 10:15 AM</td>
+                      <td>Chrome - Windows</td>
+                      <td>India</td>
+                      <td><span class="status-success">Success</span></td>
+                    </tr>
+                    <tr>
+                      <td>01 Jun 2026, 08:40 PM</td>
+                      <td>Android App</td>
+                      <td>India</td>
+                      <td><span class="status-success">Success</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Active Sessions -->
+              <div class="security-section">
+                <h4><i class="fa-solid fa-desktop"></i> Active Sessions</h4>
+
+                <div class="session-card">
+                  <div>
+                    <strong>Current Device</strong>
+                    <p>Chrome on Windows • Active Now</p>
+                  </div>
+                  <button class="btn-settings btn-settings--ghost">
+                    Current Session
+                  </button>
+                </div>
+
+                <div class="session-card">
+                  <div>
+                    <strong>Android Mobile</strong>
+                    <p>Last Active: 5 mins ago</p>
+                  </div>
+                  <button class="btn-settings btn-settings--danger remove-session">
+                    Logout
+                  </button>
+                </div>
+
+                <button id="logoutAllBtn" class="btn-settings btn-settings--danger full-width">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  Logout All Devices
                 </button>
               </div>
-            </form>
-          </section>
+
+              <!-- Device Management -->
+              <div class="security-section">
+                <h4><i class="fa-solid fa-mobile-screen"></i> Device Management</h4>
+
+                <div class="device-card">
+                  <div>
+                    <strong>Windows Laptop</strong>
+                    <p>Trusted Device</p>
+                  </div>
+                  <button class="btn-settings btn-settings--ghost">
+                    Trusted
+                  </button>
+                </div>
+
+                <div class="device-card">
+                  <div>
+                    <strong>Android Phone</strong>
+                    <p>Registered Device</p>
+                  </div>
+                  <button class="btn-settings btn-settings--danger remove-device">
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+            </section>
+          </div>
         </div>
       </div>
     </main>
   </div>
+
+  <script>
+    const username = localStorage.getItem("username");
+    if (!username) location.href = "/login";
+
+    document.getElementById("userName").textContent = username;
+    document.getElementById("profileEmail").textContent = username;
+    const letter = username ? username[0].toUpperCase() : "U";
+    document.getElementById("userAvatarLetter").textContent = letter;
+    document.getElementById("profileAvatar").textContent = letter;
+
+    function logout() {
+      localStorage.removeItem("username");
+      localStorage.removeItem("user_id");
+      location.href = "/login";
+    }
+
+
+    // Language card JS
+    setTimeout(function() {
+      var sel = document.getElementById('languageSelect');
+      var display = document.getElementById('currentLangDisplay');
+      var saveBtn = document.getElementById('saveLangBtn');
+      var status = document.getElementById('langSaveStatus');
+      if (typeof I18n !== 'undefined' && sel) {
+        sel.value = I18n.getLanguage();
+        if (display) display.textContent = I18n.getLanguageName();
+      }
+      if (sel) sel.addEventListener('change', function() {
+        if (display && typeof I18n !== 'undefined') display.textContent = I18n.getLanguageName(sel.value);
+      });
+      if (saveBtn) saveBtn.addEventListener('click', async function() {
+        var chosen = (sel && sel.value) || 'en';
+        if (typeof I18n !== 'undefined') await I18n.setLanguage(chosen);
+        if (display && typeof I18n !== 'undefined') display.textContent = I18n.getLanguageName(chosen);
+        if (status) {
+          status.style.display = 'inline-flex';
+          setTimeout(function(){ status.style.display = 'none'; }, 2500);
+        }
+        var uid = localStorage.getItem('user_id');
+        if (uid) fetch('/api/user/language', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({user_id: uid, language: chosen})
+        }).catch(function(){});
+      });
+    }, 200);
+
+    document.querySelectorAll(".settings-theme-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".settings-theme-chip").forEach((c) => c.classList.remove("is-active"));
+        chip.classList.add("is-active");
+      });
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      document.getElementById("passwordForm").reset();
+    });
+
+    document.getElementById("passwordForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Password update will be connected to the API in a future release.");
+    });
+    /* ==========================
+   SECURITY SETTINGS
+========================== */
+
+    const twoFactorToggle =
+      document.getElementById("twoFactorToggle");
+
+    const biometricToggle =
+      document.getElementById("biometricToggle");
+
+    /* Load saved settings */
+
+    if (twoFactorToggle) {
+      twoFactorToggle.checked =
+        localStorage.getItem("2fa") === "true";
+    }
+
+    if (biometricToggle) {
+      biometricToggle.checked =
+        localStorage.getItem("biometric") === "true";
+    }
+
+    /* Save settings */
+
+    twoFactorToggle?.addEventListener("change", function () {
+      localStorage.setItem("2fa", this.checked);
+
+      alert(
+        this.checked
+          ? "Two-Factor Authentication Enabled"
+          : "Two-Factor Authentication Disabled"
+      );
+    });
+
+    biometricToggle?.addEventListener("change", function () {
+      localStorage.setItem("biometric", this.checked);
+
+      alert(
+        this.checked
+          ? "Biometric Authentication Enabled"
+          : "Biometric Authentication Disabled"
+      );
+    });
+
+    /* Logout all devices */
+
+    document.getElementById("logoutAllBtn")
+      ?.addEventListener("click", () => {
+
+        const confirmLogout =
+          confirm(
+            "Are you sure you want to logout from all devices?"
+          );
+
+        if (confirmLogout) {
+          alert(
+            "All active sessions have been terminated."
+          );
+        }
+      });
+
+    /* Remove session */
+
+    document.querySelectorAll(".remove-session")
+      .forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+          const session =
+            btn.closest(".session-card");
+
+          session.remove();
+
+          alert("Session logged out.");
+        });
+
+      });
+
+    /* Remove device */
+
+    document.querySelectorAll(".remove-device")
+      .forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+          const device =
+            btn.closest(".device-card");
+
+          device.remove();
+
+          alert("Device removed successfully.");
+        });
+
+      });
+  </script>
 </body>
+
 </html>

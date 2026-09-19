@@ -3,9 +3,300 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EchoVision — Cyber Support</title>
+  <title>CyberGuard — Cyber Support</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/cyberguard/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="/cyberguard/i18n.js"></script>
+  <style>
+    /* Tables inside chat bubbles */
+    .bubble table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.01);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+    }
+    .bubble th {
+      background: rgba(37, 99, 235, 0.1);
+      color: #3b82f6;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border, rgba(255, 255, 255, 0.08));
+    }
+    .bubble td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      color: var(--text-secondary, #94a3b8);
+      vertical-align: top;
+    }
+    .bubble tr:last-child td {
+      border-bottom: none;
+    }
+    /* Ensure lists render properly in markdown */
+    .bubble ul, .bubble ol {
+      margin: 8px 0;
+      padding-left: 20px;
+    }
+    .bubble li {
+      margin: 4px 0;
+    }
+
+    /* Dashboard report card containers */
+    .bubble .report-card {
+      background: #0f172a !important;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 16px 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    .bubble .report-card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f8fafc !important;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 8px;
+    }
+    /* Summary Grid */
+    .bubble .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 8px 0;
+    }
+    .bubble .summary-item {
+      background: rgba(255, 255, 255, 0.04) !important;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .bubble .summary-item-label {
+      font-size: 0.7rem;
+      color: #94a3b8 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .bubble .summary-item-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffffff !important;
+      margin-top: 4px;
+    }
+    /* Badges */
+    .bubble .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .bubble .badge-red {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+    .bubble .badge-orange {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .bubble .badge-green {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+    /* Timeline */
+    .bubble .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      padding: 18px 18px 18px 30px;
+      margin: 20px 0;
+      background: #0f172a !important;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    .bubble .timeline::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 24px;
+      bottom: 24px;
+      width: 2px;
+      background: rgba(99, 102, 241, 0.3);
+    }
+    .bubble .timeline-item {
+      position: relative;
+    }
+    .bubble .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 6px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #3b82f6;
+      border: 2px solid #0f172a;
+    }
+    .bubble .timeline-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #f1f5f9 !important;
+    }
+    /* CTA buttons */
+    .bubble .cta-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .bubble .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: 1px solid #1d4ed8;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+    .bubble .cta-btn:hover {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      transform: translateY(-1px);
+    }
+    .bubble .cta-btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+    }
+    .bubble .cta-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    /* Recovery step details summaries */
+    .bubble details.recovery-step {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: 10px;
+      margin: 10px 0;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+    .bubble details.recovery-step summary {
+      padding: 14px 16px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #f1f5f9;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(37, 99, 235, 0.08);
+    }
+    .bubble details.recovery-step summary::before {
+      content: '▶';
+      font-size: 0.6rem;
+      color: #60a5fa;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .bubble details.recovery-step[open] summary::before {
+      transform: rotate(90deg);
+    }
+    .bubble details.recovery-step summary::-webkit-details-marker { display: none; }
+    .bubble details.recovery-step[open] {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(37, 99, 235, 0.35);
+    }
+    .bubble details.recovery-step .step-content {
+      padding: 16px 18px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(37, 99, 235, 0.15);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .bubble details.recovery-step .step-content p {
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .bubble details.recovery-step .step-content ul {
+      margin: 6px 0 10px 16px;
+    }
+    .bubble details.recovery-step .step-content li {
+      margin: 5px 0;
+      color: #94a3b8;
+    }
+    .bubble details.recovery-step .step-content strong {
+      color: #e2e8f0;
+    }
+    /* Checklist */
+    .bubble .checklist-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 16px 0;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(37, 99, 235, 0.15);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .bubble .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      cursor: pointer;
+      user-select: none;
+      padding: 6px 8px;
+      border-radius: 7px;
+      transition: background 0.15s ease;
+    }
+    .bubble .checklist-item:hover {
+      background: rgba(37, 99, 235, 0.06);
+    }
+    .bubble .checklist-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      border-radius: 4px;
+      border: 2px solid rgba(99, 102, 241, 0.5);
+      background: transparent;
+      cursor: pointer;
+      accent-color: #3b82f6;
+    }
+    .bubble .checklist-item input[type="checkbox"]:checked + span,
+    .bubble .checklist-item:has(input:checked) {
+      color: #94a3b8;
+      text-decoration: line-through;
+    }
+  </style>
 </head>
 <body class="page-dashboard">
 
@@ -29,24 +320,31 @@
 
     <div class="status-bar">
       <div class="status-dot"></div>
-      <span class="status-text">SYSTEM ACTIVE</span>
+      <span class="status-text" data-i18n="sidebar_status">SYSTEM ACTIVE</span>
     </div>
 
-    <button class="btn-new" onclick="clearChat()">+ New Session</button>
+    <button class="btn-new" onclick="clearChat()" data-i18n="sidebar_new_session">+ New Session</button>
+
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      <a class="sidebar-nav__link is-active" href="/dashboard"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="nav_dashboard">Dashboard</span></a>
+      <a class="sidebar-nav__link" href="/extension"><i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="nav_extension">Download Extension</span></a>
+      <a class="sidebar-nav__link" href="/complaint-form"><i class="fa-solid fa-file-circle-exclamation"></i> <span data-i18n="nav_complaint">File Complaint</span></a>
+      <a class="sidebar-nav__link" href="/agents"><i class="fa-solid fa-gear"></i> <span data-i18n="nav_settings">Settings</span></a>
+    </nav>
 
     <div class="sidebar-panel">
-      <div class="sidebar-panel-title">System Status</div>
+      <div class="sidebar-panel-title" data-i18n="sidebar_system_status">System Status</div>
       <div class="sidebar-stat">
-        <span>RAG Engine</span>
-        <span class="online">● Online</span>
+        <span data-i18n="sidebar_rag">RAG Engine</span>
+        <span class="online" data-i18n="sidebar_online">● Online</span>
       </div>
       <div class="sidebar-stat">
-        <span>AI Model</span>
-        <span class="online">● Active</span>
+        <span data-i18n="sidebar_ai">AI Model</span>
+        <span class="online" data-i18n="sidebar_active">● Active</span>
       </div>
       <div class="sidebar-stat">
-        <span>Threat DB</span>
-        <span class="online">● Synced</span>
+        <span data-i18n="sidebar_threatdb">Threat DB</span>
+        <span class="online" data-i18n="sidebar_synced">● Synced</span>
       </div>
     </div>
 
@@ -59,7 +357,7 @@
             <div class="user-label">● Active</div>
           </div>
         </div>
-        <button class="btn-logout" onclick="logout()">Exit</button>
+        <button class="btn-logout" onclick="logout()" data-i18n="btn_exit">Exit</button>
       </div>
     </div>
   </aside>
@@ -67,23 +365,29 @@
   <main class="main">
     <div class="main-header">
       <div>
-        <div class="main-title">Cyber Incident Assistant</div>
-        <div class="main-subtitle">Secure end-to-end session · All data encrypted</div>
+        <div class="main-title" data-i18n="chat_title">Cyber Incident Assistant</div>
+        <div class="main-subtitle" data-i18n="chat_subtitle">Secure end-to-end session · All data encrypted</div>
       </div>
-      <div class="tag">AI Powered</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div id="ngLangMount"></div>
+        <a href="/extension" class="btn-extension" title="Download CyberGuard Extension">
+          <i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="chat_extension_btn">Extension</span>
+        </a>
+        <div class="tag" data-i18n="chat_ai_tag">AI Powered</div>
+      </div>
     </div>
 
     <div class="pane" id="pane">
       <div class="empty-state" id="emptyState">
         <div class="empty-icon">🛡️</div>
-        <p>Start a conversation to get expert cyber support</p>
+        <p data-i18n="chat_empty">Start a conversation to get expert cyber support</p>
       </div>
     </div>
 
     <div class="composer">
       <div class="composer-input-wrap">
         <svg class="composer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input id="messageInput" placeholder="Describe your incident or ask a question…" aria-label="Message" />
+        <input id="messageInput" data-i18n-placeholder="chat_placeholder" placeholder="Describe your incident or ask a question…" aria-label="Message" />
       </div>
       <button class="btn-send" id="sendBtn" title="Send" aria-label="Send message">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -95,7 +399,7 @@
 
 <script>
   const username = localStorage.getItem("username");
-  if (!username) location.href = "login.html";
+  if (!username) location.href = "/login";
 
   document.getElementById("userName").innerText = username;
   const letter = username ? username[0].toUpperCase() : "U";
@@ -107,22 +411,13 @@
 
   function formatMessage(text) {
     if (!text) return "";
-    text = text
-      .replace(/^###### (.*$)/gim, "<h6>$1</h6>")
-      .replace(/^##### (.*$)/gim, "<h5>$1</h5>")
-      .replace(/^#### (.*$)/gim, "<h4>$1</h4>")
-      .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-      .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-      .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-      .replace(/\*\*(.*?)\*\*/gim, "<b>$1</b>")
-      .replace(/\*(.*?)\*/gim, "<i>$1</i>")
-      .replace(/^\s*-\s+(.*)$/gim, "<li>$1</li>")
-      .replace(/(<li>.*<\/li>)/gim, "<ul>$1</ul>")
-      .replace(/^\s*\d+\.\s+(.*)$/gim, "<li>$1</li>")
-      .replace(/(<li>.*<\/li>)/gim, "<ol>$1</ol>")
-      .replace(/^> (.*)$/gim, "<blockquote>$1</blockquote>")
-      .replace(/^---$/gim, "<hr>");
-    return text;
+    try {
+      marked.setOptions({ breaks: true, gfm: true });
+      return marked.parse(text);
+    } catch (e) {
+      console.warn("Failed to parse markdown with marked:", e);
+      return text;
+    }
   }
 
   function saveChat() { localStorage.setItem(STORAGE_KEY, pane.innerHTML); }
@@ -140,14 +435,22 @@
     if (empty) empty.remove();
   }
 
-  function addMessage(text, type) {
+  function addMessage(text, type, detectedLang) {
     hideEmpty();
     const msg = document.createElement("div");
     msg.className = "message " + type;
     const avatarLabel = type === "user" ? (username ? username[0].toUpperCase() : "U") : "AI";
+
+    // Show language badge on user messages when language is not English
+    let langBadge = "";
+    if (type === "user" && detectedLang && detectedLang !== "en") {
+      const langName = I18n.getLanguageName(detectedLang);
+      langBadge = `<span class="ng-lang-badge" title="Detected: ${langName}">🌐 ${langName}</span>`;
+    }
+
     msg.innerHTML = `
       <div class="avatar">${avatarLabel}</div>
-      <div class="bubble">${formatMessage(text)}</div>
+      <div class="bubble">${formatMessage(text)}${langBadge}</div>
     `;
     pane.appendChild(msg);
     pane.scrollTop = pane.scrollHeight;
@@ -157,6 +460,9 @@
   async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
+
+    // Get user's current selected language
+    const userLang = (typeof I18n !== 'undefined') ? I18n.getLanguage() : 'en';
 
     addMessage(text, "user");
     input.value = "";
@@ -170,34 +476,53 @@
     pane.appendChild(typing);
     pane.scrollTop = pane.scrollHeight;
 
-    const res = await fetch("https://cyberguard-api-zxry.onrender.com/query", {
+    const res = await fetch(`${window.location.origin}/query`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: text, username })
+      body: JSON.stringify({ query: text, username, language: userLang })
     });
 
     const data = await res.json();
     typing.remove();
 
+    // If server detected a different language, offer to switch
+    const serverLang = data.detected_language;
+    if (serverLang && serverLang !== userLang && serverLang !== 'en') {
+      const langName = I18n.getLanguageName(serverLang);
+      const banner = document.createElement('div');
+      banner.className = 'message bot';
+      banner.innerHTML = `
+        <div class="avatar">AI</div>
+        <div class="bubble" style="font-size:0.82rem;">
+          🌐 <strong>${langName}</strong> detected. 
+          <button onclick="I18n.setLanguage('${serverLang}');this.closest('.message').remove();"
+            style="margin-left:8px;padding:3px 10px;border-radius:6px;border:1px solid rgba(99,102,241,0.4);background:rgba(99,102,241,0.08);color:#818cf8;font-size:0.78rem;cursor:pointer;">
+            Switch to ${langName}
+          </button>
+        </div>`;
+      pane.appendChild(banner);
+    }
+
     if (data.redirect === true) {
-      addComplaintButton(data.answer);
+      addComplaintButton(data.answer, serverLang);
       return;
     }
 
     addMessage(data.answer, "bot");
   }
 
-  function addComplaintButton(answerText) {
+  function addComplaintButton(answerText, detectedLang) {
     hideEmpty();
     const msg = document.createElement("div");
     msg.className = "message bot";
+    const btnLabel = (typeof I18n !== 'undefined') ? I18n.t('chat_complaint_btn') : '🛡️ File Cyber Complaint';
     msg.innerHTML = `
       <div class="avatar">AI</div>
       <div class="bubble">
         ${formatMessage(answerText)}
         <br>
         <button class="btn-complaint" onclick="goToComplaint()">
-          🛡️ File Cyber Complaint
+          ${btnLabel}
         </button>
       </div>
     `;
@@ -206,14 +531,16 @@
     saveChat();
   }
 
-  function goToComplaint() { window.location.href = "complaint.html"; }
+  function goToComplaint() { window.location.href = "/complaint-form"; }
 
   loadChat();
 
   const params = new URLSearchParams(window.location.search);
   if (params.get("from") === "complaint") {
-    addMessage("✅ Your cyber complaint has been submitted successfully. Our cyber team will contact you shortly.", "bot");
-    history.replaceState(null, "", "index.html");
+    const successMsg = (typeof I18n !== 'undefined') ? I18n.t('chat_success') :
+      "✅ Your cyber complaint has been submitted successfully. Our cyber team will contact you shortly.";
+    addMessage(successMsg, "bot");
+    history.replaceState(null, "", "/dashboard");
   }
 
   document.getElementById("sendBtn").onclick = sendMessage;
@@ -221,9 +548,10 @@
 
   function clearChat() {
     localStorage.removeItem(STORAGE_KEY);
-    pane.innerHTML = `<div class="empty-state" id="emptyState"><div class="empty-icon">🛡️</div><p>Start a conversation to get expert cyber support</p></div>`;
+    const emptyMsg = (typeof I18n !== 'undefined') ? I18n.t('chat_empty') : 'Start a conversation to get expert cyber support';
+    pane.innerHTML = `<div class="empty-state" id="emptyState"><div class="empty-icon">🛡️</div><p>${emptyMsg}</p></div>`;
   }
-  function logout() { localStorage.removeItem("username"); location.href = "login.html"; }
+  function logout() { localStorage.removeItem("username"); localStorage.removeItem("user_id"); location.href = "/login"; }
 </script>
 </body>
 </html>

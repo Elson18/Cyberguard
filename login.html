@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EchoVision — Login</title>
+<title>CyberGuard — Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="/cyberguard/styles.css" />
 </head>
 <body class="page-auth">
 
@@ -17,8 +17,8 @@
 
 <div class="auth-card">
   <div class="card-logo">
-    <div class="logo-icon">EC</div>
-    <div class="logo-name">EchoVision</div>
+    <div class="logo-icon">CG</div>
+    <div class="logo-name">CyberGuard</div>
     <div class="logo-sub">Cybercrime Support Platform</div>
   </div>
 
@@ -46,7 +46,7 @@
 
   <div class="card-footer">
     <a href="#">Forgot Password?</a>
-    <a href="Signin.html">No account? <span>Create one →</span></a>
+    <a href="/signin">No account? <span>Create one →</span></a>
   </div>
 </div>
 
@@ -64,7 +64,7 @@ function login() {
 
   if (!identifier || !password) { showAlert("Please fill all fields"); return; }
 
-  fetch("https://cyberguard-api-zxry.onrender.com/login", {
+  fetch(`${window.location.origin}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ identifier, password })
@@ -74,10 +74,10 @@ function login() {
     if (status === 200) {
       localStorage.setItem("user_id", data.user_id);
       localStorage.setItem("username", identifier);
-      window.location.href = "index.html";
+      window.location.href = "/dashboard";
     } else if (status === 404) {
       showAlert("User not found. Please create an account.");
-      setTimeout(() => window.location.href = "Signin.html", 1500);
+      setTimeout(() => window.location.href = "/signin", 1500);
     } else {
       showAlert(data.detail || "Invalid credentials");
     }
