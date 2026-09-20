@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CyberGuard — Settings</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/cyberguard/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous" />
+  <script src="/cyberguard/i18n.js"></script>
+</head>
+
+<body class="page-dashboard page-settings">
+
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-blob bg-blob--blue"></div>
+    <div class="bg-blob bg-blob--cyan"></div>
+    <div class="bg-blob bg-blob--emerald"></div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo-wrap">
+        <div class="logo-icon">CG</div>
+        <div class="logo-text">
+          <strong>CyberGuard</strong>
+          <span>Multilingual CyberCrime Support<br>RAG + Agentic AI</span>
+        </div>
+      </div>
+
+      <div class="status-bar">
+        <div class="status-dot"></div>
+        <span class="status-text">SYSTEM ACTIVE</span>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <a class="sidebar-nav__link" href="/dashboard"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="nav_dashboard">Dashboard</span></a>
+        <a class="sidebar-nav__link" href="/extension"><i class="fa-solid fa-puzzle-piece"></i> <span data-i18n="nav_extension">Download Extension</span></a>
+        <a class="sidebar-nav__link" href="/complaint-form"><i class="fa-solid fa-file-circle-exclamation"></i> <span data-i18n="nav_complaint">File Complaint</span></a>
+        <a class="sidebar-nav__link is-active" href="/agents"><i class="fa-solid fa-gear"></i> <span data-i18n="nav_settings">Settings</span></a>
+      </nav>
+
+      <div class="sidebar-panel">
+        <div class="sidebar-panel-title">System Status</div>
+        <div class="sidebar-stat">
+          <span>RAG Engine</span>
+          <span class="online">● Online</span>
+        </div>
+        <div class="sidebar-stat">
+          <span>AI Model</span>
+          <span class="online">● Active</span>
+        </div>
+        <div class="sidebar-stat">
+          <span>Threat DB</span>
+          <span class="online">● Synced</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-row">
+          <div class="user-info">
+            <div class="user-avatar" id="userAvatarLetter">U</div>
+            <div>
+              <div class="user-name" id="userName">—</div>
+              <div class="user-label">● Active</div>
+            </div>
+          </div>
+          <button class="btn-logout" type="button" onclick="logout()">Exit</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="main-header">
+        <div>
+          <div class="main-title" data-i18n="settings_title">Security Settings</div>
+          <div class="main-subtitle" data-i18n="settings_subtitle">Manage your profile, notifications, and security preferences.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div id="ngLangMount"></div>
+          <div class="tag" data-i18n="nav_settings">Account</div>
+        </div>
+      </div>
+
+      <div class="settings-scroll">
+        <div class="settings-grid">
+          <div>
+            <section class="settings-card">
+              <div class="settings-card__title">User Profile</div>
+              <div class="settings-card__sub">Account identity and access level.</div>
+              <div class="settings-profile">
+                <div class="settings-profile__avatar" id="profileAvatar">U</div>
+                <div>
+                  <div class="settings-profile__name" id="profileEmail">—</div>
+                  <div class="settings-profile__meta">Primary account · Linked to incident workspace</div>
+                  <div class="settings-role">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>CyberGuard User</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="settings-card">
+              <div class="settings-card__title">Alerts & Notifications</div>
+              <div class="settings-card__sub">Configure how CyberGuard notifies you.</div>
+              <div class="settings-toggle-list">
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>System notifications</strong>
+                    <span>In-app alerts for new threats and anomalies.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" checked />
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Email alerts</strong>
+                    <span>Summarized incident reports to your inbox.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" />
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Real-time threat monitoring</strong>
+                    <span>Continuous analysis via CyberGuard extension.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" checked />
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div>
+            <section class="settings-card" id="languageSection">
+              <div class="settings-card__title" data-i18n="settings_language_title">Language &amp; Region</div>
+              <div class="settings-card__sub" data-i18n="settings_language_sub">Choose your preferred language for the interface and AI responses.</div>
+
+              <div class="settings-fields">
+                <div class="settings-field">
+                  <label data-i18n="settings_language_current">Current Language</label>
+                  <div id="currentLangDisplay" style="font-weight:700;font-size:0.9rem;color:#3b82f6;padding:8px 0;">English</div>
+                </div>
+                <div class="settings-field">
+                  <label for="languageSelect" data-i18n="settings_language_select">Select Language</label>
+                  <select id="languageSelect" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:#0f172a;color:#e2e8f0;font-size:0.88rem;font-family:inherit;">
+                    <optgroup label="🇮🇳 Indian Languages">
+                      <option value="en">English</option>
+                      <option value="ta">தமிழ் (Tamil)</option>
+                      <option value="hi">हिन्दी (Hindi)</option>
+                      <option value="te">తెలుగు (Telugu)</option>
+                      <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                      <option value="ml">മലയാളം (Malayalam)</option>
+                      <option value="bn">বাংলা (Bengali)</option>
+                      <option value="mr">मराठी (Marathi)</option>
+                      <option value="gu">ગુજરાતી (Gujarati)</option>
+                      <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                      <option value="or">ଓଡ଼ିଆ (Odia)</option>
+                    </optgroup>
+                    <optgroup label="🌐 International">
+                      <option value="es">Español (Spanish)</option>
+                      <option value="fr">Français (French)</option>
+                      <option value="de">Deutsch (German)</option>
+                      <option value="pt">Português (Portuguese)</option>
+                      <option value="ar">العربية (Arabic)</option>
+                      <option value="ja">日本語 (Japanese)</option>
+                      <option value="ko">한국어 (Korean)</option>
+                      <option value="zh">中文 (Chinese)</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <div class="settings-actions" style="margin-top:16px;">
+                <button type="button" class="btn-settings btn-settings--primary" id="saveLangBtn">
+                  <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="settings_language_save">Save Preference</span>
+                </button>
+                <span id="langSaveStatus" style="font-size:0.8rem;color:#34d399;display:none;margin-left:12px;">
+                  <i class="fa-solid fa-check"></i> <span data-i18n="settings_language_saved">Language preference saved!</span>
+                </span>
+              </div>
+            </section>
+
+            <section class="settings-card">
+              <div class="settings-card__title" data-i18n="settings_appearance_title">Appearance</div>
+              <div class="settings-card__sub" data-i18n="settings_appearance_sub">Adjust theme for your workspace.</div>
+              <div class="settings-theme-chips">
+                <button type="button" class="settings-theme-chip is-active" data-theme="light">
+                  <i class="fa-regular fa-sun"></i> Light
+                </button>
+                <button type="button" class="settings-theme-chip" data-theme="dark">
+                  <i class="fa-solid fa-moon"></i> Dark
+                </button>
+                <button type="button" class="settings-theme-chip" data-theme="auto">
+                  <i class="fa-solid fa-circle-half-stroke"></i> Auto
+                </button>
+              </div>
+              <p class="settings-hint">
+                <i class="fa-solid fa-circle-info"></i>
+                Light theme matches the CyberGuard dashboard (recommended).
+              </p>
+            </section>
+
+            <section class="settings-card">
+              <div class="settings-card__title">Change Password</div>
+              <div class="settings-card__sub">Use a strong, unique password to secure your access.</div>
+
+              <form id="passwordForm">
+                <div class="settings-fields">
+                  <div class="settings-field">
+                    <label for="current_password">Current password</label>
+                    <input id="current_password" type="password" placeholder="••••••••"
+                      autocomplete="current-password" />
+                  </div>
+                  <div class="settings-field">
+                    <label for="new_password">New password</label>
+                    <input id="new_password" type="password" placeholder="Min. 8 characters"
+                      autocomplete="new-password" />
+                  </div>
+                  <div class="settings-field">
+                    <label for="confirm_password">Confirm password</label>
+                    <input id="confirm_password" type="password" placeholder="Repeat new password"
+                      autocomplete="new-password" />
+                  </div>
+                </div>
+                <p class="settings-hint">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  Use at least 1 number, 1 symbol, and 1 uppercase letter.
+                </p>
+                <div class="settings-actions">
+                  <button type="button" class="btn-settings btn-settings--ghost" id="resetBtn">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                  </button>
+                  <button type="submit" class="btn-settings btn-settings--primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Save changes
+                  </button>
+                </div>
+              </form>
+            </section>
+            <!-- Security Settings -->
+            <section class="settings-card">
+              <div class="settings-card__title">Security Settings</div>
+              <div class="settings-card__sub">
+                Manage authentication, devices, and account security.
+              </div>
+
+              <!-- Toggles -->
+              <div class="settings-toggle-list">
+
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Two-Factor Authentication (2FA)</strong>
+                    <span>Require OTP verification during login.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" id="twoFactorToggle">
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+
+                <div class="settings-toggle">
+                  <div class="settings-toggle__label">
+                    <strong>Biometric Authentication</strong>
+                    <span>Use fingerprint or face authentication.</span>
+                  </div>
+                  <label class="settings-switch">
+                    <input type="checkbox" id="biometricToggle">
+                    <span class="settings-switch__slider"></span>
+                  </label>
+                </div>
+
+              </div>
+
+              <!-- Login Activity -->
+              <div class="security-section">
+                <h4><i class="fa-solid fa-clock-rotate-left"></i> Login Activity History</h4>
+
+                <table class="security-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Device</th>
+                      <th>Location</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>02 Jun 2026, 10:15 AM</td>
+                      <td>Chrome - Windows</td>
+                      <td>India</td>
+                      <td><span class="status-success">Success</span></td>
+                    </tr>
+                    <tr>
+                      <td>01 Jun 2026, 08:40 PM</td>
+                      <td>Android App</td>
+                      <td>India</td>
+                      <td><span class="status-success">Success</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Active Sessions -->
+              <div class="security-section">
+                <h4><i class="fa-solid fa-desktop"></i> Active Sessions</h4>
+
+                <div class="session-card">
+                  <div>
+                    <strong>Current Device</strong>
+                    <p>Chrome on Windows • Active Now</p>
+                  </div>
+                  <button class="btn-settings btn-settings--ghost">
+                    Current Session
+                  </button>
+                </div>
+
+                <div class="session-card">
+                  <div>
+                    <strong>Android Mobile</strong>
+                    <p>Last Active: 5 mins ago</p>
+                  </div>
+                  <button class="btn-settings btn-settings--danger remove-session">
+                    Logout
+                  </button>
+                </div>
+
+                <button id="logoutAllBtn" class="btn-settings btn-settings--danger full-width">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  Logout All Devices
+                </button>
+              </div>
+
+              <!-- Device Management -->
+              <div class="security-section">
+                <h4><i class="fa-solid fa-mobile-screen"></i> Device Management</h4>
+
+                <div class="device-card">
+                  <div>
+                    <strong>Windows Laptop</strong>
+                    <p>Trusted Device</p>
+                  </div>
+                  <button class="btn-settings btn-settings--ghost">
+                    Trusted
+                  </button>
+                </div>
+
+                <div class="device-card">
+                  <div>
+                    <strong>Android Phone</strong>
+                    <p>Registered Device</p>
+                  </div>
+                  <button class="btn-settings btn-settings--danger remove-device">
+                    Remove
+                  </button>
+                </div>
+              </div>
+
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const username = localStorage.getItem("username");
+    if (!username) location.href = "/login";
+
+    document.getElementById("userName").textContent = username;
+    document.getElementById("profileEmail").textContent = username;
+    const letter = username ? username[0].toUpperCase() : "U";
+    document.getElementById("userAvatarLetter").textContent = letter;
+    document.getElementById("profileAvatar").textContent = letter;
+
+    function logout() {
+      localStorage.removeItem("username");
+      localStorage.removeItem("user_id");
+      location.href = "/login";
+    }
+
+
+    // Language card JS
+    setTimeout(function() {
+      var sel = document.getElementById('languageSelect');
+      var display = document.getElementById('currentLangDisplay');
+      var saveBtn = document.getElementById('saveLangBtn');
+      var status = document.getElementById('langSaveStatus');
+      if (typeof I18n !== 'undefined' && sel) {
+        sel.value = I18n.getLanguage();
+        if (display) display.textContent = I18n.getLanguageName();
+      }
+      if (sel) sel.addEventListener('change', function() {
+        if (display && typeof I18n !== 'undefined') display.textContent = I18n.getLanguageName(sel.value);
+      });
+      if (saveBtn) saveBtn.addEventListener('click', async function() {
+        var chosen = (sel && sel.value) || 'en';
+        if (typeof I18n !== 'undefined') await I18n.setLanguage(chosen);
+        if (display && typeof I18n !== 'undefined') display.textContent = I18n.getLanguageName(chosen);
+        if (status) {
+          status.style.display = 'inline-flex';
+          setTimeout(function(){ status.style.display = 'none'; }, 2500);
+        }
+        var uid = localStorage.getItem('user_id');
+        if (uid) fetch('/api/user/language', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({user_id: uid, language: chosen})
+        }).catch(function(){});
+      });
+    }, 200);
+
+    document.querySelectorAll(".settings-theme-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".settings-theme-chip").forEach((c) => c.classList.remove("is-active"));
+        chip.classList.add("is-active");
+      });
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      document.getElementById("passwordForm").reset();
+    });
+
+    document.getElementById("passwordForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Password update will be connected to the API in a future release.");
+    });
+    /* ==========================
+   SECURITY SETTINGS
+========================== */
+
+    const twoFactorToggle =
+      document.getElementById("twoFactorToggle");
+
+    const biometricToggle =
+      document.getElementById("biometricToggle");
+
+    /* Load saved settings */
+
+    if (twoFactorToggle) {
+      twoFactorToggle.checked =
+        localStorage.getItem("2fa") === "true";
+    }
+
+    if (biometricToggle) {
+      biometricToggle.checked =
+        localStorage.getItem("biometric") === "true";
+    }
+
+    /* Save settings */
+
+    twoFactorToggle?.addEventListener("change", function () {
+      localStorage.setItem("2fa", this.checked);
+
+      alert(
+        this.checked
+          ? "Two-Factor Authentication Enabled"
+          : "Two-Factor Authentication Disabled"
+      );
+    });
+
+    biometricToggle?.addEventListener("change", function () {
+      localStorage.setItem("biometric", this.checked);
+
+      alert(
+        this.checked
+          ? "Biometric Authentication Enabled"
+          : "Biometric Authentication Disabled"
+      );
+    });
+
+    /* Logout all devices */
+
+    document.getElementById("logoutAllBtn")
+      ?.addEventListener("click", () => {
+
+        const confirmLogout =
+          confirm(
+            "Are you sure you want to logout from all devices?"
+          );
+
+        if (confirmLogout) {
+          alert(
+            "All active sessions have been terminated."
+          );
+        }
+      });
+
+    /* Remove session */
+
+    document.querySelectorAll(".remove-session")
+      .forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+          const session =
+            btn.closest(".session-card");
+
+          session.remove();
+
+          alert("Session logged out.");
+        });
+
+      });
+
+    /* Remove device */
+
+    document.querySelectorAll(".remove-device")
+      .forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+          const device =
+            btn.closest(".device-card");
+
+          device.remove();
+
+          alert("Device removed successfully.");
+        });
+
+      });
+  </script>
+</body>
+
+</html>

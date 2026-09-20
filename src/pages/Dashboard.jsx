@@ -6,6 +6,7 @@ import { LanguageSelector } from '../components/LanguageSelector';
 import { useAuth } from '../context/AuthContext';
 import { useI18n } from '../context/I18nContext';
 import { sendQuery } from '../services/api';
+import { useSpeechRecognition, RECOGNITION_STATES } from '../hooks/useSpeechRecognition';
 
 marked.setOptions({ breaks: true, gfm: true });
 
@@ -29,8 +30,33 @@ export function Dashboard() {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [suggestedLang, setSuggestedLang] = useState(null);
+  const [dismissedSpeechError, setDismissedSpeechError] = useState(false);
 
   const paneRef = useRef(null);
+
+  const {
+    isSupported: isSpeechSupported,
+    status: speechStatus,
+    error: speechError,
+    toggleListening,
+    stopListening,
+    resetSpeech,
+    activeLocale,
+  } = useSpeechRecognition({
+    lang,
+    onTranscript: (finalText, interimText) => {
+      const combined = [finalText, interimText].filter(Boolean).join(' ');
+      if (combined) {
+        setInputText(combined);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (speechError) {
+      setDismissedSpeechError(false);
+    }
+  }, [speechError]);
 
   useEffect(() => {
     try {
@@ -64,6 +90,10 @@ export function Dashboard() {
 
   const handleSend = async (e) => {
     if (e) e.preventDefault();
+    if (speechStatus === RECOGNITION_STATES.LISTENING) {
+      stopListening();
+    }
+
     const text = inputText.trim();
     if (!text) return;
 
@@ -72,6 +102,7 @@ export function Dashboard() {
     setInputText('');
     setIsTyping(true);
     setSuggestedLang(null);
+    resetSpeech();
 
     try {
       const { ok, data } = await sendQuery(text, username, lang);
@@ -217,7 +248,83 @@ export function Dashboard() {
           )}
         </div>
 
+        {speechStatus === RECOGNITION_STATES.LISTENING && (
+          <div className="speech-status-bar">
+            <span>
+              🔴 <strong>Listening...</strong> ({getLanguageName(lang)} - {activeLocale})
+            </span>
+            <button
+              type="button"
+              onClick={stopListening}
+              style={{
+                background: 'rgba(239,68,68,0.15)',
+                border: '1px solid rgba(239,68,68,0.4)',
+                borderRadius: '4px',
+                color: '#ef4444',
+                padding: '2px 8px',
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                fontWeight: '600',
+              }}
+            >
+              Stop
+            </button>
+          </div>
+        )}
+
+        {speechError && !dismissedSpeechError && (
+          <div className="speech-error-banner">
+            <span>⚠️ {speechError}</span>
+            <button
+              type="button"
+              onClick={() => setDismissedSpeechError(true)}
+              title="Dismiss warning"
+              aria-label="Dismiss warning"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
         <form className="composer" onSubmit={handleSend}>
+          <button
+            type="button"
+            className={`btn-mic ${speechStatus === RECOGNITION_STATES.LISTENING ? 'is-listening' : ''}`}
+            onClick={toggleListening}
+            disabled={!isSpeechSupported}
+            title={
+              !isSpeechSupported
+                ? t('mic_unsupported', "Voice input isn't supported in this browser. Please use a supported browser or type your message.")
+                : speechStatus === RECOGNITION_STATES.LISTENING
+                ? t('mic_stop', 'Stop voice input')
+                : t('mic_start', 'Start voice input')
+            }
+            aria-label={
+              speechStatus === RECOGNITION_STATES.LISTENING
+                ? 'Stop voice input'
+                : 'Start voice input'
+            }
+          >
+            {speechStatus === RECOGNITION_STATES.LISTENING ? (
+              <span className="mic-listening-indicator">
+                <span className="mic-dot"></span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </span>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+            )}
+          </button>
+
           <div className="composer-input-wrap">
             <svg className="composer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
@@ -225,12 +332,17 @@ export function Dashboard() {
             </svg>
             <input
               id="messageInput"
-              placeholder={t('chat_placeholder', 'Type here or ask anything…')}
+              placeholder={
+                speechStatus === RECOGNITION_STATES.LISTENING
+                  ? t('mic_listening_placeholder', 'Listening... Speak now...')
+                  : t('chat_placeholder', 'Type here or ask anything…')
+              }
               aria-label="Message"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
             />
           </div>
+
           <button className="btn-send" type="submit" title="Send" aria-label="Send message">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="22" y1="2" x2="11" y2="13" />
@@ -242,3 +354,4 @@ export function Dashboard() {
     </div>
   );
 }
+

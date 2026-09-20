@@ -1,4 +1,4 @@
-export const API_BASE = window.CYBERGUARD_API_URL || 'https://cvmqhx7t-8765.inc1.devtunnels.ms';
+export const API_BASE = window.CYBERGUARD_API_URL || 'http://localhost:8765';
 
 export async function loginUser(identifier, password) {
   const response = await fetch(`${API_BASE}/login`, {

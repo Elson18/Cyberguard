@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { VoiceOrb } from '../components/VoiceOrb';
 import './VoiceComplaint.css';
+import { API_BASE } from '../services/api';
 
 const SUPPORTED_LANGUAGES = [
   { code: 'en', name: 'English', native: 'English' },
@@ -352,7 +353,7 @@ export function VoiceComplaint() {
       );
     } else {
       try {
-        const res = await fetch('https://cvmqhx7t-8765.inc1.devtunnels.ms/api/complaint/submit-voice', {
+        const res = await fetch(`${API_BASE}/api/complaint/submit-voice`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(complaintSummary),
