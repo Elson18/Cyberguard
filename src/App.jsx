@@ -11,7 +11,6 @@ import { Complaint } from './pages/Complaint';
 import { ExtensionDownload } from './pages/ExtensionDownload';
 import { EmailVerification } from './pages/EmailVerification';
 import { Settings } from './pages/Settings';
-import { VoiceComplaint } from './pages/VoiceComplaint';
 
 export default function App() {
   return (
@@ -29,22 +28,6 @@ export default function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/signin" element={<Signin />} />
-            <Route
-              path="/voice-complaint"
-              element={
-                <ProtectedRoute>
-                  <VoiceComplaint />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/voice"
-              element={
-                <ProtectedRoute>
-                  <VoiceComplaint />
-                </ProtectedRoute>
-              }
-            />
             <Route
               path="/complaint"
               element={

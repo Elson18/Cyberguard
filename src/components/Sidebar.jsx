@@ -61,14 +61,6 @@ export function Sidebar({ onNewSession, activePage = 'dashboard' }) {
         </NavLink>
 
         <NavLink
-          to="/voice-complaint"
-          className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
-        >
-          <i className="fa-solid fa-microphone"></i>
-          <span>Voice Help</span>
-        </NavLink>
-
-        <NavLink
           to="/complaint"
           className={({ isActive }) => `sidebar-nav__link ${isActive ? 'is-active' : ''}`}
         >
