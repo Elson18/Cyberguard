@@ -95,3 +95,62 @@ export async function detectLanguage(text) {
 export function getExtensionDownloadUrl() {
   return `${API_BASE}/api/extension/download`;
 }
+
+export async function getSchedulerStatus() {
+  try {
+    const response = await fetch(`${API_BASE}/api/v1/email-verification/scheduler/status`);
+    const data = await response.json().catch(() => ({}));
+    return { ok: response.ok, status: response.status, data };
+  } catch (err) {
+    return { ok: false, status: 500, data: { error: err.message } };
+  }
+}
+
+export async function triggerSchedulerRun() {
+  try {
+    const response = await fetch(`${API_BASE}/api/v1/email-verification/scheduler/run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json().catch(() => ({}));
+    return { ok: response.ok, status: response.status, data };
+  } catch (err) {
+    return { ok: false, status: 500, data: { error: err.message } };
+  }
+}
+
+export async function startScheduler() {
+  try {
+    const response = await fetch(`${API_BASE}/api/v1/email-verification/scheduler/start`, {
+      method: 'POST',
+    });
+    const data = await response.json().catch(() => ({}));
+    return { ok: response.ok, status: response.status, data };
+  } catch (err) {
+    return { ok: false, status: 500, data: { error: err.message } };
+  }
+}
+
+export async function stopScheduler() {
+  try {
+    const response = await fetch(`${API_BASE}/api/v1/email-verification/scheduler/stop`, {
+      method: 'POST',
+    });
+    const data = await response.json().catch(() => ({}));
+    return { ok: response.ok, status: response.status, data };
+  } catch (err) {
+    return { ok: false, status: 500, data: { error: err.message } };
+  }
+}
+
+export async function fetchEmailVerificationHistory(limit = 10) {
+  try {
+    const response = await fetch(`${API_BASE}/api/v1/email-verification/history?limit=${limit}`);
+    const data = await response.json().catch(() => ({}));
+    return { ok: response.ok, status: response.status, data };
+  } catch (err) {
+    return { ok: false, status: 500, data: { error: err.message } };
+  }
+}
+
+

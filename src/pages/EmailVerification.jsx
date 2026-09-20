@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { useI18n } from '../context/I18nContext';
 import { verifyEmail } from '../services/api';
+import { EmailVerificationSchedulerCard } from '../components/EmailVerificationSchedulerCard';
+
 
 export function EmailVerification() {
   const { t } = useI18n();
@@ -184,6 +186,9 @@ export function EmailVerification() {
               Got a job offer or email from a recruiter? Check if it is safe and real.
             </p>
           </section>
+
+          {/* AUTOMATED EMAIL VERIFICATION SCHEDULER STATUS */}
+          <EmailVerificationSchedulerCard />
 
           {/* INPUT FORM CARD */}
           <section className="saas-panel ev-form-panel">
