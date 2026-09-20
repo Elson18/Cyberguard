@@ -30,6 +30,23 @@ export async function sendQuery(queryText, username, language = 'en') {
   return { ok: response.ok, status: response.status, data };
 }
 
+export async function sendVoiceQuery(audioFile, username = 'User', language = 'en') {
+  const formData = new FormData();
+  formData.append('audio', audioFile, audioFile.name);
+  if (username) formData.append('username', username);
+  if (language) formData.append('language', language);
+
+  console.log(`[Voice API] Uploading audio file ${audioFile.name} (${audioFile.size} bytes) to ${API_BASE}/api/voice-query...`);
+
+  const response = await fetch(`${API_BASE}/api/voice-query`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = await response.json().catch(() => ({}));
+  return { ok: response.ok, status: response.status, data };
+}
+
 export async function verifyEmail(emailVerificationData) {
   const response = await fetch(`${API_BASE}/api/email/verify`, {
     method: 'POST',

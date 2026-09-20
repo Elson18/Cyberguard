@@ -5,8 +5,8 @@ import { Sidebar } from '../components/Sidebar';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { useAuth } from '../context/AuthContext';
 import { useI18n } from '../context/I18nContext';
-import { sendQuery } from '../services/api';
-import { useSpeechRecognition, RECOGNITION_STATES } from '../hooks/useSpeechRecognition';
+import { sendQuery, sendVoiceQuery } from '../services/api';
+import { useAudioRecorder, RECORDING_STATES } from '../hooks/useAudioRecorder';
 
 marked.setOptions({ breaks: true, gfm: true });
 
@@ -35,28 +35,22 @@ export function Dashboard() {
   const paneRef = useRef(null);
 
   const {
-    isSupported: isSpeechSupported,
-    status: speechStatus,
-    error: speechError,
-    toggleListening,
-    stopListening,
-    resetSpeech,
-    activeLocale,
-  } = useSpeechRecognition({
-    lang,
-    onTranscript: (finalText, interimText) => {
-      const combined = [finalText, interimText].filter(Boolean).join(' ');
-      if (combined) {
-        setInputText(combined);
-      }
-    },
-  });
+    status: recStatus,
+    setStatus: setRecStatus,
+    error: recError,
+    setError: setRecError,
+    startRecording,
+    stopRecording,
+    resetAudio,
+    isRecording,
+    isProcessing: isVoiceProcessing,
+  } = useAudioRecorder();
 
   useEffect(() => {
-    if (speechError) {
+    if (recError) {
       setDismissedSpeechError(false);
     }
-  }, [speechError]);
+  }, [recError]);
 
   useEffect(() => {
     try {
@@ -70,7 +64,7 @@ export function Dashboard() {
     if (paneRef.current) {
       paneRef.current.scrollTop = paneRef.current.scrollHeight;
     }
-  }, [messages, isTyping]);
+  }, [messages, isTyping, isVoiceProcessing]);
 
   useEffect(() => {
     if (searchParams.get('from') === 'complaint') {
@@ -88,11 +82,60 @@ export function Dashboard() {
     localStorage.removeItem(storageKey);
   };
 
+  const handleVoiceToggle = async () => {
+    if (isRecording) {
+      const recordResult = await stopRecording();
+      if (!recordResult || !recordResult.audioFile) {
+        return;
+      }
+
+      setRecStatus(RECORDING_STATES.SENDING);
+      setIsTyping(true);
+
+      try {
+        console.log(`[Dashboard] Uploading recorded audio file (${recordResult.audioFile.name}, ${recordResult.audioFile.size} bytes) to backend...`);
+        const { ok, data } = await sendVoiceQuery(recordResult.audioFile, username, lang);
+        setIsTyping(false);
+
+        if (ok && data) {
+          if (data.transcription && data.transcription.trim()) {
+            const userVoiceMsg = {
+              id: Date.now(),
+              text: `🎤 *"${data.transcription}"*`,
+              type: 'user',
+              detectedLang: data.detected_language || lang,
+            };
+            setMessages((prev) => [...prev, userVoiceMsg]);
+          }
+
+          const botMsg = {
+            id: Date.now() + 1,
+            text: data.answer || "I received your voice recording, but couldn't generate an answer.",
+            type: 'bot',
+            redirect: Boolean(data.redirect),
+          };
+          setMessages((prev) => [...prev, botMsg]);
+          setRecStatus(RECORDING_STATES.SUCCESS);
+          setTimeout(() => resetAudio(), 1500);
+        } else {
+          const errDetail = data?.detail || 'Failed to process voice query. Please try speaking again.';
+          setRecError(errDetail);
+          setRecStatus(RECORDING_STATES.ERROR);
+        }
+      } catch (err) {
+        console.error('[Dashboard] Voice upload error:', err);
+        setIsTyping(false);
+        setRecError('Network error uploading audio recording to FastAPI server.');
+        setRecStatus(RECORDING_STATES.ERROR);
+      }
+    } else {
+      setDismissedSpeechError(false);
+      await startRecording();
+    }
+  };
+
   const handleSend = async (e) => {
     if (e) e.preventDefault();
-    if (speechStatus === RECOGNITION_STATES.LISTENING) {
-      stopListening();
-    }
 
     const text = inputText.trim();
     if (!text) return;
@@ -102,7 +145,6 @@ export function Dashboard() {
     setInputText('');
     setIsTyping(true);
     setSuggestedLang(null);
-    resetSpeech();
 
     try {
       const { ok, data } = await sendQuery(text, username, lang);
@@ -248,33 +290,41 @@ export function Dashboard() {
           )}
         </div>
 
-        {speechStatus === RECOGNITION_STATES.LISTENING && (
+        {isRecording && (
           <div className="speech-status-bar">
             <span>
-              🔴 <strong>Listening...</strong> ({getLanguageName(lang)} - {activeLocale})
+              🎙️ <strong>Recording Voice...</strong> Speak clearly now (Language: {getLanguageName(lang)})
             </span>
             <button
               type="button"
-              onClick={stopListening}
+              onClick={handleVoiceToggle}
               style={{
                 background: 'rgba(239,68,68,0.15)',
                 border: '1px solid rgba(239,68,68,0.4)',
                 borderRadius: '4px',
                 color: '#ef4444',
-                padding: '2px 8px',
-                fontSize: '0.75rem',
+                padding: '3px 10px',
+                fontSize: '0.78rem',
                 cursor: 'pointer',
                 fontWeight: '600',
               }}
             >
-              Stop
+              Stop & Send
             </button>
           </div>
         )}
 
-        {speechError && !dismissedSpeechError && (
+        {isVoiceProcessing && (
+          <div className="speech-status-bar" style={{ background: 'rgba(99,102,241,0.1)', borderColor: 'rgba(99,102,241,0.3)', color: '#6366f1' }}>
+            <span>
+              ⚙️ <strong>Uploading Audio...</strong> Transcribing & querying CyberGuard AI...
+            </span>
+          </div>
+        )}
+
+        {recError && !dismissedSpeechError && (
           <div className="speech-error-banner">
-            <span>⚠️ {speechError}</span>
+            <span>⚠️ {recError}</span>
             <button
               type="button"
               onClick={() => setDismissedSpeechError(true)}
@@ -289,32 +339,33 @@ export function Dashboard() {
         <form className="composer" onSubmit={handleSend}>
           <button
             type="button"
-            className={`btn-mic ${speechStatus === RECOGNITION_STATES.LISTENING ? 'is-listening' : ''}`}
-            onClick={toggleListening}
-            disabled={!isSpeechSupported}
+            className={`btn-mic ${isRecording ? 'is-listening' : ''} ${isVoiceProcessing ? 'is-processing' : ''}`}
+            onClick={handleVoiceToggle}
+            disabled={isVoiceProcessing}
             title={
-              !isSpeechSupported
-                ? t('mic_unsupported', "Voice input isn't supported in this browser. Please use a supported browser or type your message.")
-                : speechStatus === RECOGNITION_STATES.LISTENING
-                ? t('mic_stop', 'Stop voice input')
-                : t('mic_start', 'Start voice input')
+              isRecording
+                ? 'Stop recording and send voice message'
+                : isVoiceProcessing
+                ? 'Uploading & processing voice...'
+                : 'Record voice message'
             }
             aria-label={
-              speechStatus === RECOGNITION_STATES.LISTENING
-                ? 'Stop voice input'
-                : 'Start voice input'
+              isRecording
+                ? 'Stop recording voice message'
+                : 'Record voice message'
             }
           >
-            {speechStatus === RECOGNITION_STATES.LISTENING ? (
+            {isRecording ? (
               <span className="mic-listening-indicator">
                 <span className="mic-dot"></span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                  <line x1="12" y1="19" x2="12" y2="23"></line>
-                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"></rect>
                 </svg>
               </span>
+            ) : isVoiceProcessing ? (
+              <svg className="composer-spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="12" cy="12" r="10" strokeDasharray="32" strokeDashoffset="10" />
+              </svg>
             ) : (
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
@@ -333,8 +384,10 @@ export function Dashboard() {
             <input
               id="messageInput"
               placeholder={
-                speechStatus === RECOGNITION_STATES.LISTENING
-                  ? t('mic_listening_placeholder', 'Listening... Speak now...')
+                isRecording
+                  ? '🎙️ Recording voice... Click stop button when finished.'
+                  : isVoiceProcessing
+                  ? '⚙️ Uploading audio to CyberGuard AI...'
                   : t('chat_placeholder', 'Type here or ask anything…')
               }
               aria-label="Message"
@@ -354,4 +407,5 @@ export function Dashboard() {
     </div>
   );
 }
+
 
