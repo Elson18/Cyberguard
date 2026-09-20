@@ -140,208 +140,203 @@ export function EmailVerificationSchedulerCard() {
         </div>
       )}
 
-      {/* 2-COLUMN DASHBOARD GRID */}
-      <div className="ev-dashboard-grid">
-        {/* LEFT COLUMN: STATUS & STATISTICS */}
-        <div className="ev-left-col">
-          {/* AUTOMATION STATUS CARD */}
-          <div className="ev-dash-card">
-            <div className="ev-card-title">
-              <i className="fa-solid fa-sliders" style={{ color: '#3b82f6' }}></i>
-              Automation Status
-            </div>
-
-            <div className="ev-status-rows">
-              <div className="ev-status-row">
-                <span className="row-label">Gmail Connection</span>
-                <span className={`row-val ${status?.gmail_connected ? 'val-green' : 'val-amber'}`}>
-                  {status?.gmail_connected ? '✓ Connected' : '⚠️ Auth Required'}
-                </span>
-              </div>
-
-              <div className="ev-status-row">
-                <span className="row-label">Scheduler</span>
-                <span className={`row-val ${status?.running ? 'val-green' : 'val-gray'}`}>
-                  {status?.running ? '● Running' : '○ Disabled'}
-                </span>
-              </div>
-
-              <div className="ev-status-row">
-                <span className="row-label">Last Checked</span>
-                <span className="row-val">
-                  {status?.last_run_at ? formatRelativeTime(status.last_run_at) : 'Not executed yet'}
-                </span>
-              </div>
-
-              <div className="ev-status-row">
-                <span className="row-label">Next Scheduled Check</span>
-                <span className="row-val">
-                  {status?.next_run_at ? formatRelativeTime(status.next_run_at) : (status?.running ? 'In 2 mins' : 'Disabled')}
-                </span>
-              </div>
-
-              <div className="ev-status-row">
-                <span className="row-label">Last Run Result</span>
-                <span className={`row-val ${status?.last_run_status === 'failed' ? 'val-red' : (status?.last_run_status === 'success' ? 'val-green' : 'val-gray')}`}>
-                  {status?.last_run_status ? status.last_run_status.toUpperCase() : 'No runs yet'}
-                </span>
-              </div>
-            </div>
+      {/* TOP ROW: AUTOMATION STATUS & STATISTICS SIDE-BY-SIDE */}
+      <div className="ev-top-cards-grid">
+        {/* AUTOMATION STATUS CARD */}
+        <div className="ev-dash-card">
+          <div className="ev-card-title">
+            <i className="fa-solid fa-sliders" style={{ color: '#3b82f6' }}></i>
+            Automation Status
           </div>
 
-          {/* STATISTICS CARD */}
-          <div className="ev-dash-card" style={{ marginTop: '20px' }}>
-            <div className="ev-card-title">
-              <i className="fa-solid fa-chart-simple" style={{ color: '#3b82f6' }}></i>
-              Statistics
+          <div className="ev-status-rows">
+            <div className="ev-status-row">
+              <span className="row-label">Gmail Connection</span>
+              <span className={`row-val ${status?.gmail_connected ? 'val-green' : 'val-amber'}`}>
+                {status?.gmail_connected ? '✓ Connected' : '⚠️ Auth Required'}
+              </span>
             </div>
 
-            <div className="ev-stats-2x2">
-              <div className="stat-box">
-                <span className="stat-num color-blue">{status?.last_run_found_count || 0}</span>
-                <span className="stat-lbl">Emails Found</span>
-              </div>
+            <div className="ev-status-row">
+              <span className="row-label">Scheduler</span>
+              <span className={`row-val ${status?.running ? 'val-green' : 'val-gray'}`}>
+                {status?.running ? '● Running' : '○ Disabled'}
+              </span>
+            </div>
 
-              <div className="stat-box">
-                <span className="stat-num color-green">{status?.last_run_processed_count || 0}</span>
-                <span className="stat-lbl">Processed</span>
-              </div>
+            <div className="ev-status-row">
+              <span className="row-label">Last Checked</span>
+              <span className="row-val">
+                {status?.last_run_at ? formatRelativeTime(status.last_run_at) : 'Not executed yet'}
+              </span>
+            </div>
 
-              <div className="stat-box">
-                <span className="stat-num color-red">{status?.last_run_failed_count || 0}</span>
-                <span className="stat-lbl">Failed</span>
-              </div>
+            <div className="ev-status-row">
+              <span className="row-label">Next Scheduled Check</span>
+              <span className="row-val">
+                {status?.next_run_at ? formatRelativeTime(status.next_run_at) : (status?.running ? 'In 2 mins' : 'Disabled')}
+              </span>
+            </div>
 
-              <div className="stat-box">
-                <span className="stat-num color-dark">{status?.total_runs || 0}</span>
-                <span className="stat-lbl">Total Runs</span>
-              </div>
+            <div className="ev-status-row">
+              <span className="row-label">Last Run Result</span>
+              <span className={`row-val ${status?.last_run_status === 'failed' ? 'val-red' : (status?.last_run_status === 'success' ? 'val-green' : 'val-gray')}`}>
+                {status?.last_run_status ? status.last_run_status.toUpperCase() : 'No runs yet'}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* RIGHT COLUMN: RECENT EMAILS RESULTS */}
-        <div className="ev-right-col">
-          <div className="ev-dash-card ev-emails-card">
-            <div className="ev-emails-header">
-              <div>
-                <div className="ev-card-title" style={{ marginBottom: '2px' }}>
-                  <i className="fa-solid fa-clock-rotate-left" style={{ color: '#2563eb' }}></i>
-                  Recent Emails
-                </div>
-                <span className="ev-card-subtitle">Emails analyzed by CyberGuard ({history.length})</span>
-              </div>
+        {/* STATISTICS CARD */}
+        <div className="ev-dash-card">
+          <div className="ev-card-title">
+            <i className="fa-solid fa-chart-simple" style={{ color: '#3b82f6' }}></i>
+            Statistics
+          </div>
+
+          <div className="ev-stats-2x2">
+            <div className="stat-box">
+              <span className="stat-num color-blue">{status?.last_run_found_count || 0}</span>
+              <span className="stat-lbl">Emails Found</span>
             </div>
 
-            {history.length === 0 ? (
-              <div className="ev-empty-state">
-                <i className="fa-solid fa-inbox empty-icon"></i>
-                <div style={{ fontWeight: '600', color: '#334155', marginBottom: '4px' }}>No emails analyzed yet</div>
-                <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>
-                  Click <strong>Run Now</strong> to check your Gmail inbox or wait for the automatic 2-minute scheduler.
-                </p>
-              </div>
-            ) : (
-              <div className="ev-email-list">
-                {history.map((item) => {
-                  const badge = getClassBadge(item);
-                  const isExpanded = expandedId === item.id;
-                  const resultData = item.result || {};
-                  const senderStr = item.sender_name ? `${item.sender_name} (${item.sender_email})` : (item.sender_email || 'Unknown Sender');
+            <div className="stat-box">
+              <span className="stat-num color-green">{status?.last_run_processed_count || 0}</span>
+              <span className="stat-lbl">Processed</span>
+            </div>
 
-                  return (
-                    <div key={item.id} className={`ev-email-item ${isExpanded ? 'is-expanded' : ''}`}>
-                      {/* COMPACT CARD HEADER */}
-                      <div className="ev-email-item-header" onClick={() => setExpandedId(isExpanded ? null : item.id)}>
-                        <div className="ev-email-left-info">
-                          <span className="ev-class-badge" style={{ backgroundColor: badge.bg, color: badge.color, borderColor: badge.border }}>
-                            <i className={`fa-solid ${badge.icon}`}></i> [{badge.label}]
+            <div className="stat-box">
+              <span className="stat-num color-red">{status?.last_run_failed_count || 0}</span>
+              <span className="stat-lbl">Failed</span>
+            </div>
+
+            <div className="stat-box">
+              <span className="stat-num color-dark">{status?.total_runs || 0}</span>
+              <span className="stat-lbl">Total Runs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* BOTTOM SECTION: RECENT EMAILS RESULTS (FULL WIDTH BELOW STATUS & STATS) */}
+      <div className="ev-dash-card ev-emails-card-full">
+        <div className="ev-emails-header">
+          <div>
+            <div className="ev-card-title" style={{ marginBottom: '2px' }}>
+              <i className="fa-solid fa-clock-rotate-left" style={{ color: '#2563eb' }}></i>
+              Recent Emails
+            </div>
+            <span className="ev-card-subtitle">Emails analyzed by CyberGuard ({history.length})</span>
+          </div>
+        </div>
+
+        {history.length === 0 ? (
+          <div className="ev-empty-state">
+            <i className="fa-solid fa-inbox empty-icon"></i>
+            <div style={{ fontWeight: '600', color: '#334155', marginBottom: '4px' }}>No emails analyzed yet</div>
+            <p style={{ margin: 0, fontSize: '13px', color: '#64748b' }}>
+              Click <strong>Run Now</strong> to check your Gmail inbox or wait for the automatic 2-minute scheduler.
+            </p>
+          </div>
+        ) : (
+          <div className="ev-email-list">
+            {history.map((item) => {
+              const badge = getClassBadge(item);
+              const isExpanded = expandedId === item.id;
+              const resultData = item.result || {};
+              const senderStr = item.sender_name ? `${item.sender_name} (${item.sender_email})` : (item.sender_email || 'Unknown Sender');
+
+              return (
+                <div key={item.id} className={`ev-email-item ${isExpanded ? 'is-expanded' : ''}`}>
+                  {/* COMPACT CARD HEADER */}
+                  <div className="ev-email-item-header" onClick={() => setExpandedId(isExpanded ? null : item.id)}>
+                    <div className="ev-email-left-info">
+                      <span className="ev-class-badge" style={{ backgroundColor: badge.bg, color: badge.color, borderColor: badge.border }}>
+                        <i className={`fa-solid ${badge.icon}`}></i> [{badge.label}]
+                      </span>
+                      <div className="ev-email-subject-block">
+                        <div className="ev-email-subject">{item.subject || '(No Subject)'}</div>
+                        <div className="ev-email-sender">From: {senderStr}</div>
+                      </div>
+                    </div>
+
+                    <div className="ev-email-right-info">
+                      {resultData.risk_score !== undefined && (
+                        <div className="ev-risk-pill">
+                          <span className="risk-lbl">Risk Score:</span>
+                          <span className={`risk-val ${resultData.risk_score > 60 ? 'score-red' : (resultData.risk_score > 30 ? 'score-amber' : 'score-green')}`}>
+                            {resultData.risk_score} / 100
                           </span>
-                          <div className="ev-email-subject-block">
-                            <div className="ev-email-subject">{item.subject || '(No Subject)'}</div>
-                            <div className="ev-email-sender">From: {senderStr}</div>
-                          </div>
                         </div>
+                      )}
 
-                        <div className="ev-email-right-info">
-                          {resultData.risk_score !== undefined && (
-                            <div className="ev-risk-pill">
-                              <span className="risk-lbl">Risk Score:</span>
-                              <span className={`risk-val ${resultData.risk_score > 60 ? 'score-red' : (resultData.risk_score > 30 ? 'score-amber' : 'score-green')}`}>
-                                {resultData.risk_score} / 100
-                              </span>
-                            </div>
-                          )}
-
-                          <div className="ev-email-date">
-                            {formatRelativeTime(item.created_at || item.received_at)}
-                          </div>
-
-                          <span className="ev-expand-btn">
-                            {isExpanded ? (
-                              <>▲ Collapse</>
-                            ) : (
-                              <>▼ Expand</>
-                            )}
-                          </span>
-                        </div>
+                      <div className="ev-email-date">
+                        {formatRelativeTime(item.created_at || item.received_at)}
                       </div>
 
-                      {/* EXPANDED DETAILS DRAWER */}
-                      {isExpanded && (
-                        <div className="ev-email-drawer">
-                          {item.processing_error && (
-                            <div className="drawer-alert-error">
-                              <strong>Processing Error:</strong> {item.processing_error}
-                            </div>
-                          )}
+                      <span className="ev-expand-btn">
+                        {isExpanded ? (
+                          <>▲ Collapse</>
+                        ) : (
+                          <>▼ Expand</>
+                        )}
+                      </span>
+                    </div>
+                  </div>
 
-                          {resultData.user_message && (
-                            <div className="drawer-block">
-                              <div className="drawer-block-title">AI Summary &amp; Recommendation</div>
-                              <p className="drawer-block-text">{resultData.user_message}</p>
-                            </div>
-                          )}
+                  {/* EXPANDED DETAILS DRAWER */}
+                  {isExpanded && (
+                    <div className="ev-email-drawer">
+                      {item.processing_error && (
+                        <div className="drawer-alert-error">
+                          <strong>Processing Error:</strong> {item.processing_error}
+                        </div>
+                      )}
 
-                          {resultData.recommendation && (
-                            <div className="drawer-block">
-                              <div className="drawer-block-title">Recommendation</div>
-                              <p className="drawer-block-text">{resultData.recommendation}</p>
-                            </div>
-                          )}
+                      {resultData.user_message && (
+                        <div className="drawer-block">
+                          <div className="drawer-block-title">AI Summary &amp; Recommendation</div>
+                          <p className="drawer-block-text">{resultData.user_message}</p>
+                        </div>
+                      )}
 
-                          {/* Security Signals & Indicators */}
-                          {Array.isArray(resultData.indicators) && resultData.indicators.length > 0 && (
-                            <div className="drawer-block">
-                              <div className="drawer-block-title">Security Signals &amp; Indicators</div>
-                              <ul className="indicators-list">
-                                {resultData.indicators.map((ind, idx) => (
-                                  <li key={idx} className={`ind-item ${ind.severity === 'HIGH' || ind.severity === 'CRITICAL' ? 'ind-high' : ''}`}>
-                                    <strong>[{ind.severity || 'INFO'}]</strong> {ind.explanation || ind.evidence || ind.type}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
+                      {resultData.recommendation && (
+                        <div className="drawer-block">
+                          <div className="drawer-block-title">Recommendation</div>
+                          <p className="drawer-block-text">{resultData.recommendation}</p>
+                        </div>
+                      )}
 
-                          {/* Email Body Snippet */}
-                          {item.email_body && (
-                            <div className="drawer-block" style={{ marginBottom: 0 }}>
-                              <div className="drawer-block-title">Email Body Snippet</div>
-                              <div className="email-body-code-box">
-                                {item.email_body}
-                              </div>
-                            </div>
-                          )}
+                      {/* Security Signals & Indicators */}
+                      {Array.isArray(resultData.indicators) && resultData.indicators.length > 0 && (
+                        <div className="drawer-block">
+                          <div className="drawer-block-title">Security Signals &amp; Indicators</div>
+                          <ul className="indicators-list">
+                            {resultData.indicators.map((ind, idx) => (
+                              <li key={idx} className={`ind-item ${ind.severity === 'HIGH' || ind.severity === 'CRITICAL' ? 'ind-high' : ''}`}>
+                                <strong>[{ind.severity || 'INFO'}]</strong> {ind.explanation || ind.evidence || ind.type}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Email Body Snippet */}
+                      {item.email_body && (
+                        <div className="drawer-block" style={{ marginBottom: 0 }}>
+                          <div className="drawer-block-title">Email Body Snippet</div>
+                          <div className="email-body-code-box">
+                            {item.email_body}
+                          </div>
                         </div>
                       )}
                     </div>
-                  );
-                })}
-              </div>
-            )}
+                  )}
+                </div>
+              );
+            })}
           </div>
-        </div>
+        )}
       </div>
 
       {/* SCOPED DASHBOARD STYLES */}
@@ -359,7 +354,7 @@ export function EmailVerificationSchedulerCard() {
           align-items: center;
           flex-wrap: wrap;
           gap: 16px;
-          margin-bottom: 24px;
+          margin-bottom: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid var(--border-color, #e2e8f0);
         }
@@ -445,16 +440,16 @@ export function EmailVerificationSchedulerCard() {
         .alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
         .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 
-        /* 2-COLUMN DASHBOARD GRID */
-        .ev-dashboard-grid {
+        /* TOP CARDS GRID: STATUS & STATS SIDE-BY-SIDE */
+        .ev-top-cards-grid {
           display: grid;
-          grid-template-columns: minmax(280px, 0.35fr) minmax(450px, 0.65fr);
-          gap: 24px;
-          align-items: start;
+          grid-template-columns: 1.2fr 0.8fr;
+          gap: 20px;
+          margin-bottom: 24px;
         }
 
-        @media (max-width: 992px) {
-          .ev-dashboard-grid {
+        @media (max-width: 768px) {
+          .ev-top-cards-grid {
             grid-template-columns: 1fr;
           }
         }
@@ -465,6 +460,11 @@ export function EmailVerificationSchedulerCard() {
           border-radius: 12px;
           padding: 20px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .ev-emails-card-full {
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .ev-card-title {
@@ -529,13 +529,13 @@ export function EmailVerificationSchedulerCard() {
           background: #f8fafc;
           border: 1px solid #e2e8f0;
           border-radius: 8px;
-          padding: 12px;
+          padding: 14px 12px;
           text-align: center;
         }
 
         .stat-num {
           display: block;
-          font-size: 20px;
+          font-size: 22px;
           font-weight: 700;
           line-height: 1.2;
         }
@@ -554,11 +554,7 @@ export function EmailVerificationSchedulerCard() {
           display: block;
         }
 
-        /* EMAILS LIST IN RIGHT COLUMN */
-        .ev-emails-card {
-          padding: 20px;
-        }
-
+        /* EMAILS LIST FULL WIDTH */
         .ev-emails-header {
           display: flex;
           justify-content: space-between;
@@ -607,7 +603,7 @@ export function EmailVerificationSchedulerCard() {
         }
 
         .ev-email-item-header {
-          padding: 14px 16px;
+          padding: 14px 18px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -625,14 +621,14 @@ export function EmailVerificationSchedulerCard() {
         .ev-email-left-info {
           display: flex;
           align-items: center;
-          gap: 12px;
-          flex: 1 1 260px;
+          gap: 14px;
+          flex: 1 1 320px;
         }
 
         .ev-class-badge {
           font-size: 11px;
           font-weight: 700;
-          padding: 4px 8px;
+          padding: 5px 10px;
           border-radius: 6px;
           border: 1px solid transparent;
           display: inline-flex;
@@ -649,26 +645,18 @@ export function EmailVerificationSchedulerCard() {
           font-size: 14px;
           font-weight: 600;
           color: #0f172a;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 380px;
         }
 
         .ev-email-sender {
           font-size: 12px;
           color: #64748b;
           margin-top: 2px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 380px;
         }
 
         .ev-email-right-info {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 20px;
         }
 
         .ev-risk-pill {
@@ -709,7 +697,7 @@ export function EmailVerificationSchedulerCard() {
 
         /* DRAWER CONTENT */
         .ev-email-drawer {
-          padding: 16px;
+          padding: 18px 20px;
           border-top: 1px solid #f1f5f9;
           background: #fafafa;
         }
@@ -733,7 +721,7 @@ export function EmailVerificationSchedulerCard() {
           line-height: 1.5;
           color: #475569;
           background: #ffffff;
-          padding: 10px 12px;
+          padding: 10px 14px;
           border-radius: 6px;
           border: 1px solid #e2e8f0;
         }
@@ -757,7 +745,7 @@ export function EmailVerificationSchedulerCard() {
         .email-body-code-box {
           background: #0f172a;
           color: #f8fafc;
-          padding: 12px;
+          padding: 12px 14px;
           border-radius: 6px;
           font-family: monospace;
           font-size: 12px;
@@ -768,7 +756,7 @@ export function EmailVerificationSchedulerCard() {
         }
 
         .drawer-alert-error {
-          padding: 10px 12px;
+          padding: 10px 14px;
           background: #fef2f2;
           border: 1px solid #fecaca;
           border-radius: 6px;
